@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Launching Page</title>
+    <link rel="stylesheet" href="launchingPage.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>User Menu</h2>
+        <ul>
+          <li><a href="#" id="history">View History</a></li>
+          <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+      </div>
+
+      <div class="main-body">
+        <header>
+          <h1>Welcome to Plant Disease Detector</h1>
+        </header>
+        <main>
+          <div class="welcome-message">
+            <h2 id="welcome-text">Welcome, [User]!</h2>
+            <p>(explanation of the app.)</p>
+
+            <div class="upload-section">
+              <h3>Upload a Plant Image:</h3>
+
+              <div class="upload-container">
+                <button id="upload-btn" class="upload-button">
+                  Choose Image
+                </button>
+
+                <div class="image-frame" id="image-preview">
+                  <span id="placeholder-text">Image Preview</span>
+                </div>
+              </div>
+
+              <input
+                type="file"
+                id="fileInput"
+                name="file"
+                accept="image/*"
+                required
+                style="display: none"
+              />
+
+              <button class="detect">Detect</button>
+              <div class="info" id="file-info">
+                Disease: <span id="answer">Answer</span>
+                <button class="save">Save</button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="launchingPage.js"></script>
+  </body>
+</html>
