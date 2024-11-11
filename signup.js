@@ -1,6 +1,6 @@
 function handleSignup(event) {
   event.preventDefault();
-
+  const username = document.getElementById("UserName").value;
   const firstName = document.getElementById("FirstName").value;
   const lastName = document.getElementById("LastName").value;
   const email = document.getElementById("email").value;
@@ -10,10 +10,11 @@ function handleSignup(event) {
   ).value;
 
   if (
-    firstName === "" ||
-    lastName === "" ||
-    email === "" ||
-    password === "" ||
+    username == "" ||
+    firstName == "" ||
+    lastName == "" ||
+    email == "" ||
+    password == "" ||
     passwordConfirmation === ""
   ) {
     alert("Please fill in all the fields.");
@@ -25,4 +26,9 @@ function handleSignup(event) {
     alert(`Sign up successful!\nWelcome, ${firstName} ${lastName}!`);
     window.location.href = "launchingPage.html";
   }
+}
+
+function unique(){
+  const username = document.getElementById("UserName").value;
+
 }
