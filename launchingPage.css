@@ -103,28 +103,33 @@ button.save:hover {
   background-color: darkred;
 }
 
-button:hover {
+button.detect:hover {
   background-color: darkorange;
 }
 
 .upload-button {
-  background-image: url("https://img.freepik.com/premium-vector/illustration-upload_498740-5719.jpg");
+  background-image: url("https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Logo-Transparent-File.png");
   background-size: cover;
   background-repeat: no-repeat;
-  color: transparent;
+  color: rgba(255, 253, 253, 0);
   border: none;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   cursor: pointer;
   border-radius: 8px;
   position: relative;
 }
-
+#text {
+  color: rgb(71, 71, 73);
+  font-size: large;
+  font-size: 150%;
+}
 
 .image-frame {
   width: 300px;
   height: 300px;
   border: 2px solid #ccc;
+  margin-top: 10px;
   margin-bottom: 20px;
   margin-left: 32%;
   display: flex;

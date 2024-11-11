@@ -1,3 +1,16 @@
+function displayUserInfo() {
+  const firstName = localStorage.getItem("firstName");
+  const lastName = localStorage.getItem("lastName");
+
+  if (firstName && lastName) {
+    document.getElementById(
+      "welcome-text"
+    ).textContent = Welcome, `${firstName} ${lastName}!`;
+  } else {
+    window.location.href = "login.html"; 
+  }
+}
+
 document.getElementById("upload-btn").addEventListener("click", function () {
   document.getElementById("fileInput").click();
 

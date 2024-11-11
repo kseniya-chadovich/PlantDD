@@ -1,6 +1,7 @@
 function handleLogin(event) {
   event.preventDefault(); 
-
+  
+  const username = document.getElementById("Username").value;
   const firstName = document.getElementById("FirstName").value;
   const lastName = document.getElementById("LastName").value;
   const email = document.getElementById("email").value;
@@ -10,6 +11,7 @@ function handleLogin(event) {
   ).value;
 
   if (
+    username === "" ||
     firstName === "" ||
     lastName === "" ||
     email === "" ||
