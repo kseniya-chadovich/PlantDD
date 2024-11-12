@@ -1,6 +1,7 @@
 function handleLogin(event) {
   event.preventDefault(); 
 
+  const userName = document.getElementById("UserName").value;
   const firstName = document.getElementById("FirstName").value;
   const lastName = document.getElementById("LastName").value;
   const email = document.getElementById("email").value;
@@ -10,6 +11,7 @@ function handleLogin(event) {
   ).value;
 
   if (
+    userName === "" ||   
     firstName === "" ||
     lastName === "" ||
     email === "" ||
@@ -23,6 +25,6 @@ function handleLogin(event) {
     localStorage.setItem("firstName", firstName);
     localStorage.setItem("lastName", lastName);
     alert(`Login successful!\nWelcome, ${firstName} ${lastName}!`);
-    window.location.href = "launchingPage.html"; 
+    window.location.href = "/public/html/launchingPage.html"; 
   }
 }

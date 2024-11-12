@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const requestController = require('../controllers/requestController');
 
-router.post('/requests', requestController.createRequest);
-router.get('/requests', requestController.getAllRequests);
-router.get('/requests/:id', requestController.getRequestById);
+router.post('/createRequest', requestController.createRequest);
+router.get('/getAllRequests', requestController.getAllRequests);
+router.get('/getRequestsByID/:id', requestController.getRequestById);
 
 module.exports = router;

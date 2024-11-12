@@ -1,18 +1,37 @@
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 // Helper function for error handling
 const handleError = (res, error, statusCode = 500) => {
   res.status(statusCode).json({ error: error.message });
 };
 
-// Create a new user
+// Create a new user (signup)
 const createUser = async (req, res) => {
-  const { first_name, last_name, password } = req.body;
+  const {first_name, last_name, password, user_name, email} = req.body;
   try {
-    const newUser = await User.create({ first_name, last_name, password });
-    res.status(201).json(newUser);
+    // Hash the password for security
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save new user to the database
+    const newUser = await User.create({
+      first_name,
+      last_name,
+      password: hashedPassword,
+      user_name,
+      email,
+    });
+
+    // Respond with user details (without the password)
+    res.status(201).json({
+      first_name: newUser.first_name,
+      last_name: newUser.last_name,
+      user_name:newUser.user_name,
+      email: newUser.email
+    });
   } catch (error) {
-    handleError(res, error, 400);
+    console.error("Error creating user:", error);
+    res.status(400).json({ error: "User could not be created" });
   }
 };
 
@@ -43,7 +62,7 @@ const getAllUsers = async (req, res) => {
 // Update a user by ID
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, password } = req.body;
+  const {user_name, first_name, last_name, password } = req.body;
 
   try {
     const user = await User.findByPk(id);
@@ -51,6 +70,7 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    user.user_name = user_name;
     user.first_name = first_name;
     user.last_name = last_name;
     user.password = password;
