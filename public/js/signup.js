@@ -1,6 +1,7 @@
 function handleSignup(event) {
   event.preventDefault();
 
+  const username = document.getElementById("Username").value;
   const firstName = document.getElementById("FirstName").value;
   const lastName = document.getElementById("LastName").value;
   const email = document.getElementById("email").value;
@@ -10,6 +11,7 @@ function handleSignup(event) {
   ).value;
 
   if (
+    username === "" ||
     firstName === "" ||
     lastName === "" ||
     email === "" ||
@@ -20,9 +22,8 @@ function handleSignup(event) {
   } else if (password !== passwordConfirmation) {
     alert("Passwords do not match!");
   } else {
-    localStorage.setItem("firstName", firstName);
-    localStorage.setItem("lastName", lastName);
-    alert(`Sign up successful!\nWelcome, ${firstName} ${lastName}!`);
-    window.location.href = "launchingPage.html";
+    localStorage.setItem("Username", username);
+    alert(`Login successful!\nWelcome, ${Username}!`);
+    window.location.href = "../html/launchingPage.html";
   }
 }

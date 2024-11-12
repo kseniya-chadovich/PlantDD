@@ -4,12 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="C:\Users\Professional\webdev\PlantDD\public\css\login.css" />
+    <link rel="stylesheet" href="../css/login.css" />
   </head>
   <body>
     <div class="login">
       <h2>Login to Plant Disease Detector</h2>
       <form class="form" onsubmit="handleLogin(event)">
+
+        <div class="input-group">
+          <label for="Username">Username</label>
+          <input type="text" id="Username" name="Username" required />
+        </div>
+
         <div class="input-group">
           <label for="FirstName">First Name</label>
           <input type="text" id="FirstName" name="FirstName" required />
@@ -39,8 +45,10 @@
 
         <button type="submit" class="login-button">Login</button>
       </form>
-      <p class="signup-text">Don't have an account? <a href="signup.html">Sign up</a></p>
+      <p class="signup-text">
+        Don't have an account? <a href="../html/signup.html">Sign up</a>
+      </p>
     </div>
-    <script src="login.js"></script>
+    <script src="../js/login.js"></script>
   </body>
 </html>
