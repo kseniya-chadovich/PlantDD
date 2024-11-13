@@ -48,10 +48,10 @@ getSearchHistory(userId);
 
 
 function goHome() {
-  window.location.href = "../html/launchingPage.html"; // Adjust this based on your actual home page URL
+  window.location.href = "/public/html/launchingPage.html"; // Adjust this based on your actual home page URL
 }
 
 function logout() {
   // Perform any necessary logout logic, such as clearing session data or tokens
-  window.location.href = "../html/login.html"; // Redirecting to the login page
+  window.location.href = "/public/html/login.html"; // Redirecting to the login page
 }

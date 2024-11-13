@@ -41,7 +41,7 @@ async function handleSignup(event) {
 
     // Parse JSON response
     const data = await response.json();
-    alert(`Sign up successful!\nWelcome, ${data.userName}!`);
+    alert(`Sign up successful!\nWelcome, ${userName}!`);
     window.location.href = "/public/html/launchingPage.html"; // Redirect after successful signup
   } catch (error) {
     console.error("Signup error:", error);
