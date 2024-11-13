@@ -24,18 +24,18 @@
           <label for="LastName">Last Name</label>
           <input type="text" id="LastName" name="LastName" required />
         </div>
-
         <div class="input-group">
           <label for="email">Email*</label>
           <input type="email" id="email" name="email" required />
         </div>
+
+
         <div class="input-group">
           <label for="password">Password*</label>
-          <div class="password-container">
-            <input type="password" id="password" name="password" required/>
-            <i id="togglePassword1" class="fas fa-eye"></i> <!-- Eye icon inside the container -->
-          </div>
-          <div id="passwordFeedback"></div>
+          <input type="password" id="password" name="password" required/>
+          <div class="togglePassword1"><i id="togglePassword1" class="fas fa-eye"></i></div>
+          
+          <div id="passwordFeedback">Password must be at least 8 characters long, include a letter, a number, and a special character.</div>
         </div>
         
         <div class="input-group">

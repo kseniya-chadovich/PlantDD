@@ -40,7 +40,7 @@ function validatePassword() {
   const password = passwordInput.value;
 
   if (passwordCriteria.test(password)) {
-    passwordFeedback.textContent = "Password is strong!";
+    passwordFeedback.textContent = "Password is strong! Includes at least 8 characters (a letter, a number, and a special character).";
     passwordFeedback.style.color = "green";
   } else {
     passwordFeedback.textContent = "Password must be at least 8 characters long, include a letter, a number, and a special character.";
@@ -48,19 +48,7 @@ function validatePassword() {
   }
 }
 
-function changeEyePosition(){
-  const currentTop = parseInt(window.getComputedStyle(togglePassword1).top, 10);
-  console.log("Current top position of the eye icon:", currentTop);
-  // Toggle the top property of the eye icon
-  if (currentTop === 25) {
-    togglePassword1.style.top = "15%"; // Move it to 15%
-  } else {
-    togglePassword1.style.top = "25%"; // Move it to 25%
-  }
-}
-
 passwordInput.addEventListener("input", validatePassword);
-passwordInput.addEventListener("input", changeEyePosition);
 passwordInput.insertAdjacentElement("afterend", passwordFeedback);
 
 let debounceTimeout;
