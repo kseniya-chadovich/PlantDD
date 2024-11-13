@@ -35,11 +35,11 @@ const createUser = async (req, res) => {
   }
 };
 
-// Get a user by ID
-const getUserById = async (req, res) => {
-  const { id } = req.params;
+// Get a user by username
+const getUserByUsername = async (req, res) => {
+  const { user_name } = req.params;
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(user_name);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -48,6 +48,18 @@ const getUserById = async (req, res) => {
     handleError(res, error);
   }
 };
+
+
+const checkUsernameAvailability = async (req, res) => {
+  const { user_name } = req.params;
+  try {
+    const user = await User.findOne({ where: { user_name } });
+    res.json({ available: !user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error checking username availability' });
+  }
+};
+
 
 // Get all users
 const getAllUsers = async (req, res) => {
@@ -61,11 +73,11 @@ const getAllUsers = async (req, res) => {
 
 // Update a user by ID
 const updateUser = async (req, res) => {
-  const { id } = req.params;
+  const { username } = req.params;
   const {user_name, first_name, last_name, password } = req.body;
 
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(username);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -82,12 +94,12 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Delete a user by ID
+// Delete a user by username
 const deleteUser = async (req, res) => {
-  const { id } = req.params;
+  const { user_name } = req.params;
 
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(user_name);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -102,7 +114,8 @@ const deleteUser = async (req, res) => {
 // Export all controller functions
 module.exports = {
   createUser,
-  getUserById,
+  getUserByUsername,
+  checkUsernameAvailability,
   getAllUsers,
   updateUser,
   deleteUser,
