@@ -1,30 +1,37 @@
-function handleLogin(event) {
-  event.preventDefault(); 
+async function handleLogin(event) {
+  event.preventDefault(); // Prevent form submission
 
-  const userName = document.getElementById("UserName").value;
-  const firstName = document.getElementById("FirstName").value;
-  const lastName = document.getElementById("LastName").value;
-  const email = document.getElementById("email").value;
+  const username = document.getElementById("UserName").value;
   const password = document.getElementById("password").value;
-  const passwordConfirmation = document.getElementById(
-    "passwordConfirmation"
-  ).value;
 
-  if (
-    userName === "" ||   
-    firstName === "" ||
-    lastName === "" ||
-    email === "" ||
-    password === "" ||
-    passwordConfirmation === ""
-  ) {
+  if (username === "" || password === "") {
     alert("Please fill in all the fields.");
-  } else if (password !== passwordConfirmation) {
-    alert("Passwords do not match!");
-  } else {
-    localStorage.setItem("firstName", firstName);
-    localStorage.setItem("lastName", lastName);
-    alert(`Login successful!\nWelcome, ${firstName} ${lastName}!`);
-    window.location.href = "/public/html/launchingPage.html"; 
+    return;
+  }
+
+  try {
+    // Send the username/email and password to the backend for validation
+    const response = await fetch('http://localhost:3000/api/users/validatePassword', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const result = await response.json();
+
+    // Handle the response from the backend
+    if (result.status === 404) {
+      alert(result.message);  // User not found
+    } else if (result.status === 401) {
+      alert(result.message);  
+    } else if (result.status === 200) {
+      alert(`Login successful!\nWelcome, ${username}!`);  // Login successful
+      window.location.href = "/public/html/launchingPage.html"; // Redirect to another page
+    } else {
+      alert("An error occurred. Please try again later.");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    alert("An error occurred. Please try again later.");
   }
 }

@@ -37,17 +37,37 @@ const createUser = async (req, res) => {
 
 // Get a user by username
 const getUserByUsername = async (req, res) => {
-  const { user_name } = req.params;
+  const { user_name } = req.params; 
   try {
-    const user = await User.findByPk(user_name);
+    const user = await User.findOne({
+      where: { user_name }
+    });
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(user);
   } catch (error) {
-    handleError(res, error);
+    handleError(res, error); 
   }
 };
+
+const getUserByEmail = async (req, res) => {
+  const { email } = req.params; 
+  try {
+    const user = await User.findOne({
+      where: { email }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Email not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    handleError(res, error); 
+  }
+};
+
 
 
 const checkUsernameAvailability = async (req, res) => {
@@ -111,12 +131,41 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+const validatePassword = async (username, password) => {
+  try {
+    let user = await User.findOne({
+      where: { user_name: username }  
+    });
+
+    if (!user) {
+      user = await User.findOne({ where: { email: username } });  // Check by email if username is not found
+    }
+
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        return { status: 200, user: user };  
+      } else {
+        return { status: 401, message: 'Incorrect password.' };  
+      }
+    } else {
+      return { status: 404, message: 'User not found.' };  
+    }
+  } catch (error) {
+    console.error('Error validating credentials:', error);
+    return { status: 500, message: 'Internal server error.' };  
+  }
+};
+
 // Export all controller functions
 module.exports = {
   createUser,
   getUserByUsername,
+  getUserByEmail,
   checkUsernameAvailability,
   getAllUsers,
   updateUser,
   deleteUser,
+  validatePassword
 };
