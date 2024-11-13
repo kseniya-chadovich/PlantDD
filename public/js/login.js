@@ -25,6 +25,6 @@ function handleLogin(event) {
     localStorage.setItem("firstName", firstName);
     localStorage.setItem("lastName", lastName);
     alert(`Login successful!\nWelcome, ${firstName} ${lastName}!`);
-    window.location.href = "/public/html/launchingPage.html"; 
+    window.location.href = "../html/launchingPage.html"; 
   }
 }

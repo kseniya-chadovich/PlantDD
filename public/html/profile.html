@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile</title>
+    <link rel="stylesheet" href="../css/profile.css" />
+  </head>
+  <body>
+    <div class="container">
+    <!-- Button to toggle sidebar -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="launchingPage.html" id="launchingPage">Home</a></li>
+        <li><a href="history.html" id="history">View History</a></li>
+        <li id="logout"><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </div>
+    
+      <header>
+        <h1>User Profile</h1>
+      </header>
+
+      <main>
+        <div class="profile-container">
+          <div class="profile-info">
+            <h2>Profile Information</h2>
+            <br />
+            <div class="info">
+              <label for="firstName">First Name:</label>
+              <span id="firstName-display"></span>
+              <input type="text" id="firstName" class="input-field" />
+            </div>
+            <div class="info">
+              <label for="lastName">Last Name:</label>
+              <span id="lastName-display"></span>
+              <input type="text" id="lastName" class="input-field" />
+            </div>
+            <div class="info">
+              <label for="email">Email:</label>
+              <span id="email-display"></span>
+              <input type="email" id="email" class="input-field" />
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button id="edit-btn">Edit</button>
+            <button id="save-btn" style="display: none">Save</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../js/profile.js"></script>
+  </body>
+</html>
