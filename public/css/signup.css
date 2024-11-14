@@ -52,7 +52,7 @@ h2 {
     font-size: 1rem;
 }
 
-#usernameFeedback {
+#usernameFeedback, #emailFeedback {
     font-size: 0.9em;
     color: red; /* This sets the initial color to red; you can change this dynamically in JavaScript */
     margin-top: 5px;

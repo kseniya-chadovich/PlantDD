@@ -10,10 +10,7 @@ const handleError = (res, error, statusCode = 500) => {
 const createUser = async (req, res) => {
   const {first_name, last_name, password, user_name, email} = req.body;
   try {
-    // Hash the password for security
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Save new user to the database
     const newUser = await User.create({
       first_name,
       last_name,
@@ -21,8 +18,6 @@ const createUser = async (req, res) => {
       user_name,
       email,
     });
-
-    // Respond with user details (without the password)
     res.status(201).json({
       first_name: newUser.first_name,
       last_name: newUser.last_name,
@@ -34,6 +29,7 @@ const createUser = async (req, res) => {
     res.status(400).json({ error: "User could not be created" });
   }
 };
+
 
 // Get a user by username
 const getUserByUsername = async (req, res) => {
@@ -62,12 +58,34 @@ const getUserByEmail = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Email not found' });
     }
-    res.json(user);
+    
+    res.json( user );
   } catch (error) {
-    handleError(res, error); 
+    console.error('Error fetching user by email:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
+
+// Backend: Validate Password
+const validatePassword = async (req, res) => {
+  const { user_name, password } = req.body;
+  try {
+    const user = await User.findOne({
+      where: { user_name }
+    });
+
+    if (!user) {
+      return res.status(404).json({ correct: false });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    res.json({ correct: isMatch });
+  } catch (error) {
+    console.error('Error during password validation:', error);
+    res.status(500).json({ correct: false });
+  }
+};
 
 
 const checkUsernameAvailability = async (req, res) => {
@@ -77,6 +95,16 @@ const checkUsernameAvailability = async (req, res) => {
     res.json({ available: !user });
   } catch (error) {
     res.status(500).json({ message: 'Error checking username availability' });
+  }
+};
+
+const checkEmailAvailability = async (req, res) => {
+  const { email } = req.params;
+  try {
+    const user = await User.findOne({ where: { email } });
+    res.json({ available: !user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error checking email availability' });
   }
 };
 
@@ -132,40 +160,16 @@ const deleteUser = async (req, res) => {
 };
 
 
-const validatePassword = async (username, password) => {
-  try {
-    let user = await User.findOne({
-      where: { user_name: username }  
-    });
-
-    if (!user) {
-      user = await User.findOne({ where: { email: username } });  // Check by email if username is not found
-    }
-
-    if (user) {
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (isMatch) {
-        return { status: 200, user: user };  
-      } else {
-        return { status: 401, message: 'Incorrect password.' };  
-      }
-    } else {
-      return { status: 404, message: 'User not found.' };  
-    }
-  } catch (error) {
-    console.error('Error validating credentials:', error);
-    return { status: 500, message: 'Internal server error.' };  
-  }
-};
 
 // Export all controller functions
 module.exports = {
   createUser,
   getUserByUsername,
   getUserByEmail,
+  validatePassword,
   checkUsernameAvailability,
   getAllUsers,
   updateUser,
-  deleteUser,
-  validatePassword
+  deleteUser, 
+  checkEmailAvailability
 };

@@ -1,6 +1,8 @@
 const userNameInput = document.getElementById("UserName");
+const emailInput = document.getElementById("email");
 const usernameFeedback = document.getElementById("usernameFeedback");
 const passwordFeedback = document.getElementById("passwordFeedback");
+const emailFeedback = document.getElementById("emailFeedback");
 const passwordCriteria = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const passwordInput = document.getElementById("password"); 
 const passwordInputConf = document.getElementById("passwordConfirmation"); 
@@ -49,14 +51,13 @@ function validatePassword() {
 }
 
 passwordInput.addEventListener("input", validatePassword);
-passwordInput.insertAdjacentElement("afterend", passwordFeedback);
 
-let debounceTimeout;
+let debounceTimeout1;
 userNameInput.addEventListener("input", () => {
-  clearTimeout(debounceTimeout);
+  clearTimeout(debounceTimeout1);
   usernameFeedback.textContent = ""; // Reset feedback
 
-  debounceTimeout = setTimeout(async () => {
+  debounceTimeout1 = setTimeout(async () => {
     const userName = userNameInput.value.trim();
     if (userName) {
       try {
@@ -74,6 +75,31 @@ userNameInput.addEventListener("input", () => {
         }
       } catch (error) {
         console.error("Error checking username:", error);
+      }
+    }
+  }, 300); // Adjust delay time as needed
+});
+
+let debounceTimeout2;
+emailInput.addEventListener("input", () => {
+  clearTimeout(debounceTimeout2);
+  emailFeedback.textContent = ""; // Reset feedback
+
+  debounceTimeout2 = setTimeout(async () => {
+    const email = emailInput.value.trim();
+    if (email) {
+      try {
+        // Make an API call to check username availability
+        const response = await fetch(`http://localhost:3000/api/users/checkEmail/${email}`);
+        const data = await response.json();
+
+        // Update feedback based on availability
+        if (!data.available) {
+          emailFeedback.textContent = "Email is already registered. Try another one.";
+          emailFeedback.style.color = "red";
+        } 
+      } catch (error) {
+        console.error("Error checking email:", error);
       }
     }
   }, 300); // Adjust delay time as needed

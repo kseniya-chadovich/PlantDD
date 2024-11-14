@@ -1,34 +1,39 @@
 async function handleLogin(event) {
-  event.preventDefault(); // Prevent form submission
+  event.preventDefault();
 
   const username = document.getElementById("UserName").value;
   const password = document.getElementById("password").value;
 
-  if (username === "" || password === "") {
-    alert("Please fill in all the fields.");
+  if (!username || !password) {
+    alert("Please fill in all fields.");
     return;
   }
 
   try {
-    // Send the username/email and password to the backend for validation
-    const response = await fetch('http://localhost:3000/api/users/validatePassword', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
+    // Check for user by username, then email if not found
+    let userResponse = await fetch(`http://localhost:3000/api/users/getUserByUsername/${username}`);
+    if (userResponse.status === 404) {
+      const emailLocal = username;
+      userResponse = await fetch(`http://localhost:3000/api/users/getUserByEmail/${emailLocal}`);
+    }
+    const user = await userResponse.json();
 
-    const result = await response.json();
+    if (userResponse.ok) {
+      const validateResponse = await fetch('http://localhost:3000/api/users/validatePassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_name: user.user_name, password })
+      });
+      const { correct } = await validateResponse.json();
 
-    // Handle the response from the backend
-    if (result.status === 404) {
-      alert(result.message);  // User not found
-    } else if (result.status === 401) {
-      alert(result.message);  
-    } else if (result.status === 200) {
-      alert(`Login successful!\nWelcome, ${username}!`);  // Login successful
-      window.location.href = "/public/html/launchingPage.html"; // Redirect to another page
+      if (correct) {
+        alert(`Login successful! Welcome, ${user.user_name}.`);
+        window.location.href = "/public/html/launchingPage.html";
+      } else {
+        alert("Incorrect password.");
+      }
     } else {
-      alert("An error occurred. Please try again later.");
+      alert("User not found.");
     }
   } catch (error) {
     console.error("Error during login:", error);
