@@ -95,7 +95,18 @@ emailInput.addEventListener("input", () => {
 
         // Update feedback based on availability
         if (!data.available) {
-          emailFeedback.textContent = "Email is already registered. Try another one.";
+          emailFeedback.textContent = 'Email is already registered. Please user another email or ';
+
+          const loginLink = document.createElement("a");
+          loginLink.href = "/public/html/login.html";
+          loginLink.textContent = "proceed to Log In.";
+          loginLink.style.color = "red";
+          loginLink.style.fontWeight = "bold";
+          loginLink.style.textDecoration = "underline";
+
+          // Append the link to emailFeedback
+          emailFeedback.appendChild(loginLink);
+
           emailFeedback.style.color = "red";
         } 
       } catch (error) {

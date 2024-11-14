@@ -27,7 +27,7 @@ async function handleLogin(event) {
       const { correct } = await validateResponse.json();
 
       if (correct) {
-        alert(`Login successful! Welcome, ${user.user_name}.`);
+        alert(`Login successful! Welcome, ${user.user_name}!`);
         window.location.href = "/public/html/launchingPage.html";
       } else {
         alert("Incorrect password.");
