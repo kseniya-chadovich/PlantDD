@@ -3,26 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/public/css/login.css"/>
+    <title>Login - Plant Disease Detector</title>
+    <link rel="stylesheet" href="/public/css/login.css" />
   </head>
   <body>
-    <div class="login">
-      <h2>Login to Plant Disease Detector</h2>
-      <form class="form" onsubmit="handleLogin(event)">
-        <div class="input-group">
-          <label for="UserName">Username or Email*</label>
-          <input type="text" id="UserName" name="UserName" required />
-        </div>
-        <div class="input-group">
-          <label for="password">Password*</label>
-          <input type="password" id="password" name="password" required />
-        </div>
+    <div class="background-container">
+      <!-- Video background -->
+      <video autoplay muted loop class="background-video">
+        <source src="/public/videos/background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="background-overlay"></div>
 
-
-        <button type="submit" class="login-button">Login</button>
-      </form>
-      <p class="signup-text">Don't have an account? <a href="/public/html/signup.html">Sign up</a></p>
+      <!-- Login form container -->
+      <div class="login">
+        <h2>Login to Plant Disease Detector</h2>
+        <form class="form" onsubmit="handleLogin(event)">
+          <div class="input-group">
+            <label for="UserName">Username or Email*</label>
+            <input type="text" id="UserName" name="UserName" required />
+          </div>
+          <div class="input-group">
+            <label for="password">Password*</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit" class="login-button">Login</button>
+        </form>
+        <p class="signup-text">
+          Don't have an account? <a href="/public/html/signup.html">Sign up</a>
+        </p>
+      </div>
     </div>
     <script src="/public/js/login.js"></script>
   </body>
