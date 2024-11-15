@@ -1,14 +1,9 @@
-// firebase-config.js
-const firebaseConfig = {
-    apiKey: "AIzaSyDrBrPuFDQ0FactSP0L2IByXiDpn5ApTQs",
-    authDomain: "wheatplant-ea05f.firebaseapp.com",
-    projectId: "wheatplant-ea05f",
-    storageBucket: "wheatplant-ea05f.firebasestorage.app",
-    messagingSenderId: "226944092427",
-    appId: "1:226944092427:web:cebb6a9d993c94bce27a0e",
-    measurementId: "G-YXMRE8S7JX"
+module.exports = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID
   };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
   
