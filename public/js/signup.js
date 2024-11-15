@@ -95,7 +95,7 @@ emailInput.addEventListener("input", () => {
 
         // Update feedback based on availability
         if (!data.available) {
-          emailFeedback.textContent = 'Email is already registered. Please user another email or ';
+          emailFeedback.textContent = 'Email is already registered. Please use another email or ';
 
           const loginLink = document.createElement("a");
           loginLink.href = "/public/html/login.html";
@@ -143,6 +143,11 @@ async function handleSignup(event) {
   // Check if the password meets the criteria
   if (!passwordCriteria.test(password)) {
     alert("Your password must be at least 8 characters long and include at least one letter, one number, and one special character.");
+    return;
+  }
+
+  if (emailFeedback.textContent === "Email is already registered. Please use another email or proceed to Log In.") {
+    alert("Please choose a different email.");
     return;
   }
 

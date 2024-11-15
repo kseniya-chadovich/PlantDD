@@ -4,17 +4,18 @@ const sequelize = require('../config/sequelize');
 const User = sequelize.define('User', {
   user_id: {
     type: DataTypes.INTEGER,
-    primaryKey: true,   // Keep user_id as the primary key
+    primaryKey: true,  
     autoIncrement: true,  
     allowNull: false,
+    unique: true,
   },
   first_name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   last_name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -22,13 +23,14 @@ const User = sequelize.define('User', {
   },
   user_name: {
     type: DataTypes.STRING,
+    primaryKey: true,
     allowNull: false,
-    unique: true,  // Ensure user_name is unique, but not a primary key
+    unique: true,  
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,  // Optionally make email unique
+    unique: true, 
   }
 }, {
   timestamps: false,  
