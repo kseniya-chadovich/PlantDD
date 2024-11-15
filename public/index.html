@@ -10,6 +10,19 @@
   
   Redirecting to signup...
   
-  <script type="module" src="/js/firebase-config.js"></script>
+<script type="module">
+  import firebaseConfig from './js/firebase-config.js';
+  import { initializeApp } from 'firebase/app';
+  import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+  import { getFirestore, doc, setDoc } from 'firebase/firestore';
+
+  
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+
+</script>
+
 </body>
 </html>
