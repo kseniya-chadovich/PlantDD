@@ -14,7 +14,7 @@ const {
   sendPasswordResetEmail 
 } = require("firebase/auth");
 const { getFirestore, doc, setDoc } = require("firebase/firestore");
-const firebaseConfig = require("./firebase-config.js");
+const firebaseConfig = require("./public/js/firebase-config.js");
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
