@@ -4,13 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Plant Disease Detector</title>
-    <link rel="stylesheet" href="/public/css/login.css" />
+    <link rel="stylesheet" href="/css/login.css" />
+
+    <script defer src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+  
+  <!-- Firebase Configuration (your config file) -->
+    <script defer src="/js/firebase-config.js"></script>
   </head>
   <body>
     <div class="background-container">
       <!-- Video background -->
       <video autoplay muted loop class="background-video">
-        <source src="/public/videos/background.mp4" type="video/mp4" />
+        <source src="/videos/background.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div class="background-overlay"></div>
@@ -30,10 +36,10 @@
           <button type="submit" class="login-button">Login</button>
         </form>
         <p class="signup-text">
-          Don't have an account? <a href="/public/html/signup.html">Sign up</a>
+          Don't have an account? <a href="/html/signup.html">Sign up</a>
         </p>
       </div>
     </div>
-    <script src="/public/js/login.js"></script>
+    <script src="/js/login.js"></script>
   </body>
 </html>
