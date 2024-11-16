@@ -1,175 +1,84 @@
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
+const { db, auth } = require("../config/firebase"); // Import firestore and auth
 
-// Helper function for error handling
-const handleError = (res, error, statusCode = 500) => {
-  res.status(statusCode).json({ error: error.message });
-};
-
-// Create a new user (signup)
-const createUser = async (req, res) => {
-  const {first_name, last_name, password, user_name, email} = req.body;
+const registerUser = async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
-      first_name,
-      last_name,
-      password: hashedPassword,
-      user_name,
+    const { uid, userName, firstName, lastName, email } = req.body; // Get user data from the request body
+
+    // Store additional user information in Firestore under the UID
+    await db.collection("users").doc(uid).set({
+      userName,
+      firstName,
+      lastName,
       email,
     });
-    res.status(201).json({
-      first_name: newUser.first_name,
-      last_name: newUser.last_name,
-      user_name:newUser.user_name,
-      email: newUser.email
+
+    // Return a success response
+    return res.status(201).json({
+      message: "User registered successfully",
     });
   } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(400).json({ error: "User could not be created" });
+    console.error("Error registering user: ", error);
+    return res.status(500).json({ message: "Failed to register user" });
   }
 };
 
 
-// Get a user by username
-const getUserByUsername = async (req, res) => {
-  const { user_name } = req.params; 
+const getUserInfo = async (req, res) => {
   try {
-    const user = await User.findOne({
-      where: { user_name }
+    const uid = req.params.uid; // Get user ID from the route parameter
+    const userDoc = await db.collection("users").doc(uid).get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(userDoc.data());
+  } catch (error) {
+    console.error("Error getting user info: ", error);
+    return res.status(500).json({ message: "Failed to fetch user info" });
+  }
+};
+
+const updateUserInfo = async (req, res) => {
+  try {
+    const uid = req.params.uid; // Get user ID from the route parameter
+    const { first_name, last_name, username } = req.body; // Get data from the request body
+
+    const userDocRef = db.collection("users").doc(uid);
+
+    await userDocRef.update({
+      first_name,
+      last_name,
+      username,
     });
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(user);
+    return res.status(200).json({ message: "User info updated successfully" });
   } catch (error) {
-    handleError(res, error); 
+    console.error("Error updating user info: ", error);
+    return res.status(500).json({ message: "Failed to update user info" });
   }
 };
 
-const getUserByEmail = async (req, res) => {
-  const { email } = req.params; 
-  try {
-    const user = await User.findOne({
-      where: { email }
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: 'Email not found' });
-    }
-    
-    res.json( user );
-  } catch (error) {
-    console.error('Error fetching user by email:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-
-// Backend: Validate Password
-const validatePassword = async (req, res) => {
-  const { user_name, password } = req.body;
-  try {
-    const user = await User.findOne({
-      where: { user_name }
-    });
-
-    if (!user) {
-      return res.status(404).json({ correct: false });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    res.json({ correct: isMatch });
-  } catch (error) {
-    console.error('Error during password validation:', error);
-    res.status(500).json({ correct: false });
-  }
-};
-
-
-const checkUsernameAvailability = async (req, res) => {
-  const { user_name } = req.params;
-  try {
-    const user = await User.findOne({ where: { user_name } });
-    res.json({ available: !user });
-  } catch (error) {
-    res.status(500).json({ message: 'Error checking username availability' });
-  }
-};
-
-const checkEmailAvailability = async (req, res) => {
-  const { email } = req.params;
-  try {
-    const user = await User.findOne({ where: { email } });
-    res.json({ available: !user });
-  } catch (error) {
-    res.status(500).json({ message: 'Error checking email availability' });
-  }
-};
-
-
-// Get all users
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.findAll();
-    res.json(users);
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
-// Update a user by ID
-const updateUser = async (req, res) => {
-  const { username } = req.params;
-  const {user_name, first_name, last_name, password } = req.body;
-
-  try {
-    const user = await User.findByPk(username);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    user.user_name = user_name;
-    user.first_name = first_name;
-    user.last_name = last_name;
-    user.password = password;
-
-    await user.save();  // Save the updated user
-    res.json(user);      // Return the updated user
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
-// Delete a user by username
 const deleteUser = async (req, res) => {
-  const { user_name } = req.params;
-
   try {
-    const user = await User.findByPk(user_name);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    const uid = req.params.uid; // Get user ID from the route parameter
 
-    await user.destroy();  // Delete the user from the database
-    res.status(200).json({ message: 'User deleted successfully' });
+    // Delete the user's Firestore document
+    await db.collection("users").doc(uid).delete();
+
+    // Optionally, delete the user from Firebase Auth
+    await auth.deleteUser(uid);
+
+    return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
-    handleError(res, error);
+    console.error("Error deleting user: ", error);
+    return res.status(500).json({ message: "Failed to delete user" });
   }
 };
 
-
-
-// Export all controller functions
 module.exports = {
-  createUser,
-  getUserByUsername,
-  getUserByEmail,
-  validatePassword,
-  checkUsernameAvailability,
-  getAllUsers,
-  updateUser,
-  deleteUser, 
-  checkEmailAvailability
+  registerUser,
+  getUserInfo,
+  updateUserInfo,
+  deleteUser,
 };

@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Plant Disease Detector</title>
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/public/css/login.css" />
   </head>
   <body>
     <div class="background-container">
       <!-- Video background -->
       <video autoplay muted loop class="background-video">
-        <source src="/videos/background.mp4" type="video/mp4" />
+        <source src="/public/videos/background.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div class="background-overlay"></div>
@@ -20,8 +20,8 @@
         <h2>Login to Plant Disease Detector</h2>
         <form class="form" onsubmit="handleLogin(event)">
           <div class="input-group">
-            <label for="UserName">Username or Email*</label>
-            <input type="text" id="UserName" name="UserName" required />
+            <label for="email">Email*</label>
+            <input type="email" id="email" name="email" required />
           </div>
           <div class="input-group">
             <label for="password">Password*</label>
@@ -30,17 +30,16 @@
           <button type="submit" class="login-button">Login</button>
         </form>
         <p class="signup-text">
-          Don't have an account? <a href="/html/signup.html">Sign up</a>
+          Don't have an account? <a href="/public/html/signup.html">Sign up</a>
         </p>
       </div>
     </div>
-    <script src="/js/login.js"></script>
 
-    <script src="/js/signup.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-    <script src="/js/firebase-config.js"></script>
+  <script src="/public/js/firebase-config.js"></script>
+  
+  <script src="/public/js/login.js"></script>
   </body>
 </html>

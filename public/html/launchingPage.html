@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Launching Page</title>
-    <link rel="stylesheet" href="/css/launchingPage.css" />
+    <link rel="stylesheet" href="/public/css/launchingPage.css" />
   </head>
   <body>
     <div class="container">
       <div class="sidebar">
         <h2>Menu</h2>
         <ul>
-          <li><a href="history.html" id="history">View History</a></li>
+          <li><a href="/public/html/history.html" id="history">View History</a></li>
           <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
       </div>
@@ -57,13 +57,13 @@
         </main>
       </div>
     </div>
-    <script src="/js/launchingPage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-    <script src="/js/signup.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-firestore.js"></script>
+  <!-- Firebase Config -->
+  <script src="/public/js/firebase-config.js"></script>
 
-    <script src="/js/firebase-config.js"></script>
+  <!-- Signup Logic -->
+  <script src="/public/js/launchingPage.js"></script>
   </body>
 </html>

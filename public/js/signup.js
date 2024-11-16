@@ -1,3 +1,5 @@
+const apiUrl = "http://127.0.0.1:3000" || "https://wheatdiseasedetector.onrender.com";
+
 const userNameInput = document.getElementById("UserName");
 const emailInput = document.getElementById("email");
 const usernameFeedback = document.getElementById("usernameFeedback");
@@ -8,6 +10,9 @@ const passwordInput = document.getElementById("password");
 const passwordInputConf = document.getElementById("passwordConfirmation"); 
 const togglePassword1 = document.getElementById("togglePassword1");
 const togglePassword2 = document.getElementById("togglePassword2");
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
 
 togglePassword1.addEventListener("click", () => {
@@ -52,8 +57,8 @@ function validatePassword() {
 
 passwordInput.addEventListener("input", validatePassword);
 
-let debounceTimeout1;
-/*userNameInput.addEventListener("input", () => {
+/*let debounceTimeout1;
+userNameInput.addEventListener("input", () => {
   clearTimeout(debounceTimeout1);
   usernameFeedback.textContent = ""; // Reset feedback
 
@@ -116,11 +121,12 @@ emailInput.addEventListener("input", () => {
   }, 300); // Adjust delay time as needed
 }); */
 
-// Signup function
+
+
+
 async function handleSignup(event) {
   event.preventDefault();
 
-  // Collect form data
   const userName = userNameInput.value.trim();
   const firstName = document.getElementById("FirstName").value;
   const lastName = document.getElementById("LastName").value;
@@ -134,50 +140,63 @@ async function handleSignup(event) {
     return;
   }
 
-  // Check if the username feedback is still showing "taken"
-  if (usernameFeedback.textContent === "Username is taken. Try another one.") {
-    alert("Please choose a different username.");
-    return;
-  }
-
-  // Check if the password meets the criteria
   if (!passwordCriteria.test(password)) {
     alert("Your password must be at least 8 characters long and include at least one letter, one number, and one special character.");
     return;
   }
 
-  if (emailFeedback.textContent === "Email is already registered. Please use another email or proceed to Log In.") {
-    alert("Please choose a different email.");
-    return;
-  }
-
-  // Prepare request body
-  const userData = {
-    first_name: firstName,
-    last_name: lastName,
-    password,
-    user_name: userName,
-    email,
-  };
-
   try {
-    // Make API call to backend for signup
-    const response = await fetch("http://localhost:3000/api/users/createUser", {
+    // Create user with email and password
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+
+    // Send a verification email
+    await userCredential.user.sendEmailVerification();
+    alert("Signup successful! Please verify your email.");
+    const uid = userCredential.user.uid; // Get UID from Firebase Authentication
+
+    // Send the additional user info to your backend to store in Firestore
+    const response = await fetch(`${apiUrl}/api/users/register`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData)
+      body: JSON.stringify({
+        uid,
+        userName,
+        firstName,
+        lastName,
+        email,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Error in Signup: ${response.status} - ${response.statusText}`);
+      throw new Error("Failed to store user information in Firestore");
     }
 
-    alert(`Sign up successful!\nWelcome, ${userName}!`);
-    window.location.href = "/public/html/launchingPage.html";
+    const data = await response.json();
+    console.log(data.message); // Log the success message or handle it as needed
+
   } catch (error) {
-    console.error("Signup error:", error);
-    alert("An error occurred during signup. Please try again.");
+    console.error(error.message);
+    alert(`Error: ${error.message}`);
   }
 }
+
+// Password reset function
+async function handlePasswordReset(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value;
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert(`Password reset email sent to ${email}.`);
+  } catch (error) {
+    console.error("Error during password reset:", error.message);
+    alert(`Error: ${error.message}`);
+  }
+}
+
+// Attach event listeners
+// document.getElementById("signup-form").addEventListener("submit", handleSignup);
+// document.getElementById("reset-password").addEventListener("click", handlePasswordReset);

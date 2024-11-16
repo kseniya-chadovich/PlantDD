@@ -1,42 +1,53 @@
+// Ensure Firebase is initialized
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig); // Initialize Firebase with your config
+} else {
+  firebase.app(); // Use the default app if already initialized
+}
+
 async function handleLogin(event) {
   event.preventDefault();
 
-  const username = document.getElementById("UserName").value;
-  const password = document.getElementById("password").value;
+  // Collect form data
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-  if (!username || !password) {
+  // Basic validation
+  if (!email || !password) {
     alert("Please fill in all fields.");
     return;
   }
 
   try {
-    // Check for user by username, then email if not found
-    let userResponse = await fetch(`http://localhost:3000/api/users/getUserByUsername/${username}`);
-    if (userResponse.status === 404) {
-      const emailLocal = username;
-      userResponse = await fetch(`http://localhost:3000/api/users/getUserByEmail/${emailLocal}`);
-    }
-    const user = await userResponse.json();
+    // Authenticate user with Firebase
+    const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
 
-    if (userResponse.ok) {
-      const validateResponse = await fetch('http://localhost:3000/api/users/validatePassword', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_name: user.user_name, password })
-      });
-      const { correct } = await validateResponse.json();
+    // Extract user information
+    const user = userCredential.user;
 
-      if (correct) {
-        alert(`Login successful! Welcome, ${user.user_name}!`);
-        window.location.href = "/public/html/launchingPage.html";
-      } else {
-        alert("Incorrect password.");
-      }
-    } else {
-      alert("User not found.");
+    // Optional: Check if the user's email is verified
+    if (!user.emailVerified) {
+      alert("Please verify your email before logging in.");
+      return;
     }
+
+    // Successful login
+    alert(`Welcome back, ${user.email}!`);
+    window.location.href = "/public/html/launchingPage.html"; // Adjust redirect as needed
   } catch (error) {
-    console.error("Error during login:", error);
-    alert("An error occurred. Please try again later.");
+    console.error("Login error:", error.message);
+
+    // Handle specific error codes (optional)
+    switch (error.code) {
+      case "auth/user-not-found":
+        alert("No user found with this email.");
+        break;
+      case "auth/wrong-password":
+        alert("Incorrect password. Please try again.");
+        break;
+      default:
+        alert("An error occurred during login. Please try again.");
+        break;
+    }
   }
 }

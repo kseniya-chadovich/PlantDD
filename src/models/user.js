@@ -24,8 +24,7 @@ const User = sequelize.define('User', {
   user_name: {
     type: DataTypes.STRING,
     primaryKey: true,
-    allowNull: false,
-    unique: true,  
+    allowNull: false, 
   },
   email: {
     type: DataTypes.STRING,
