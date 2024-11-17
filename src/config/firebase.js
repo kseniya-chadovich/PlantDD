@@ -1,8 +1,9 @@
 const admin = require('firebase-admin');
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require('./wheatplant.json');  // Replace with the path to your Firebase service account key file
-
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8')
+);
 // Initialize the Firebase Admin app with the service account
 if (!admin.apps.length) {
   admin.initializeApp({
