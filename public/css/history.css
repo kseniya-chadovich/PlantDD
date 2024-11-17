@@ -3,6 +3,7 @@ body {
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
+    transition: transform 0.3s ease;
 }
 
 .history-container {
@@ -12,6 +13,11 @@ body {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+    position: relative;
+    transition: transform 0.3s ease; /* Smooth transition for page movement */
 }
 
 h1 {

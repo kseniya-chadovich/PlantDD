@@ -57,7 +57,7 @@ saveBtn.addEventListener("click", saveChanges);
 
 function toggleSidebar() {
   const sidebar = document.querySelector(".sidebar");
-  const mainBody = document.querySelector(".main-body");
+  const mainBody = document.querySelector(".main-content");
   const currentLeft = window.getComputedStyle(sidebar).left;
 
   // Toggle the sidebar visibility and move the main body accordingly
@@ -68,4 +68,8 @@ function toggleSidebar() {
     sidebar.style.left = "0px"; // Show sidebar
     mainBody.style.marginLeft = "300px"; // Push main body to the right (sidebar width + gap)
   }
+}
+
+function logout() {
+  window.location.href = "../html/login.html";
 }

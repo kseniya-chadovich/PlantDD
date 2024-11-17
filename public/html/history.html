@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Search History</title>
-    <link rel="stylesheet" href="../css/history.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../css/history.css" />
+  </head>
+  <body>
     <!-- Button to toggle sidebar -->
-      <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
 
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <h2>Menu</h2>
-        <ul>
-          <li><a href="launchingPage.html" id="launchingPage">Home</a></li>
-          <li><a href="profile.html" id = "profile">View Profile</a></li>
-          <li id = "logout"><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-      </div>
-
-    <div class="history-container">
-        <h1>Search History</h1>
-        <div id="history-list" class="history-list">
-            <!-- History items will be dynamically added here -->
-        </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="launchingPage.html" id="launchingPage">Home</a></li>
+        <li><a href="profile.html" id="profile">View Profile</a></li>
+        <li id="logout"><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
     </div>
 
+    <div class="main-content">
+      <div class="history-container">
+        <h1>Search History</h1>
+        <div id="history-list" class="history-list">
+          <!-- History items will be dynamically added here -->
+        </div>
+      </div>
+    </div>
     <script src="../js/history.js"></script>
-</body>
+  </body>
 </html>
