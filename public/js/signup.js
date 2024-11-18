@@ -1,4 +1,4 @@
-const apiUrl = "http://127.0.0.1:3000" || "https://wheatdiseasedetector.onrender.com";
+const apiUrl = "https://wheatdiseasedetector.onrender.com" || "http://127.0.0.1:3000";
 
 const userNameInput = document.getElementById("UserName");
 const emailInput = document.getElementById("email");
