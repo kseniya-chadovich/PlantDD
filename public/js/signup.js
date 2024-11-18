@@ -174,7 +174,9 @@ async function handleSignup(event) {
     }
 
     const data = await response.json();
-    console.log(data.message); // Log the success message or handle it as needed
+    console.log(data.message);
+
+    window.location.href = "../html/launchingPage.html";
 
   } catch (error) {
     console.error(error.message);
