@@ -1,18 +1,29 @@
+require('dotenv').config();
 const admin = require('firebase-admin');
 
-var serviceAccount = require("./wheatplant-ea05f-firebase-adminsdk-p89ex-861a52ce12.json");
+console.log("FIREBASE_CONFIG:", process.env.FIREBASE_CONFIG);
 
-// Initialize the Firebase Admin app with the service account
+
+const serviceAccount =JSON.parse(process.env.FIREBASE_CONFIG);
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
-  });
-} else {
+ })
+ } else {
   admin.app(); // Use the existing app if it's already initialized
 }
 
 // Firestore instance
 const db = admin.firestore();
 const auth = admin.auth();  // Firebase Auth instance
+
+db.collection("test").get()
+  .then(snapshot => {
+    console.log("Firebase connection successful!");
+  })
+  .catch(error => {
+    console.error("Firebase connection error:", error);
+  });
 
 module.exports = { db, auth };
