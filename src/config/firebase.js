@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 
-var serviceAccount = require("/src/config/wheatplant-ea05f-firebase-adminsdk-p89ex-861a52ce12.json");
+var serviceAccount = require(".wheatplant-ea05f-firebase-adminsdk-p89ex-861a52ce12.json");
 
 // Initialize the Firebase Admin app with the service account
 if (!admin.apps.length) {
