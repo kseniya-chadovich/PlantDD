@@ -38,5 +38,5 @@ document.getElementById("upload-btn").addEventListener("click", function () {
 
 function logout() {
   localStorage.clear();
-  window.location.href = "/public/html/login.html";
+  window.location.href = "/html/login.html";
 }

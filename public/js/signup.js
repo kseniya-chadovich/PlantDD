@@ -1,4 +1,4 @@
-const apiUrl = "https://wheatdiseasedetector.onrender.com" || "http://127.0.0.1:3000";
+const apiUrl = "https://wheatdiseasedetector.onrender.com";
 
 const userNameInput = document.getElementById("UserName");
 const emailInput = document.getElementById("email");
@@ -155,7 +155,7 @@ async function handleSignup(event) {
     const uid = userCredential.user.uid; // Get UID from Firebase Authentication
 
     // Send the additional user info to your backend to store in Firestore
-    const response = await fetch(`${apiUrl}/api/users/register`, {
+    const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -51,7 +51,7 @@
   <div class="background-container">
     <!-- Video background -->
     <video autoplay muted loop class="background-video">
-      <source src="/public/videos/background.mp4" type="video/mp4" />
+      <source src="/videos/background.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
     <div class="background-overlay"></div>
@@ -61,17 +61,36 @@
     <button id = "notuser" type="submit" class="login-button">Use without registering</button><br>
   
 <script type="module">
-  import firebaseConfig from './js/firebase-config.js';
-  import { initializeApp } from 'firebase/app';
-  import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-  import { getFirestore, doc, setDoc } from 'firebase/firestore';
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
 
-  
-  const app = initializeApp(firebaseConfig);
+  // Firebase configuration
+  const LocalFirebaseConfig = {
+  apiKey: "AIzaSyDrBrPuFDQ0FactSP0L2IByXiDpn5ApTQs",
+  authDomain: "wheatplant-ea05f.firebaseapp.com",
+  projectId: "wheatplant-ea05f",
+  storageBucket: "wheatplant-ea05f.firebasestorage.app",
+  messagingSenderId: "226944092427",
+  appId: "1:226944092427:web:cebb6a9d993c94bce27a0e",
+  measurementId: "G-YXMRE8S7JX",
+};
+
+  const app = initializeApp(LocalFirebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  document.getElementById("signup").addEventListener("click", () => {
+      window.location.href = "/html/signup.html", "_blank", "width=800,height=600";
+    });
 
+    document.getElementById("login").addEventListener("click", () => {
+      window.location.href = "/html/login.html", "_blank", "width=800,height=600";
+    });
+
+    document.getElementById("notuser").addEventListener("click", () => {
+      window.location.href = "/html/launchingPage.html", "_blank", "width=800,height=600";
+    });
 </script>
 
 </body>
