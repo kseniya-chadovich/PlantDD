@@ -1,5 +1,5 @@
-const { storage } = require('../config/firebase');
-const { v4: uuidv4 } = require('uuid'); 
+const { storage } = require("../config/firebase");
+const { v4: uuidv4 } = require("uuid");
 
 // Function to upload file and get URL
 async function uploadFile(file) {

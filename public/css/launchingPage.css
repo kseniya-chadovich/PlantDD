@@ -62,7 +62,10 @@ body {
 
 
 .sidebar ul li#logout {
+  background-color: rgba(198, 198, 209, 0.584);
+  border-radius: 10%;
   margin-top: auto; 
+  text-align: center;
 }
 
 
