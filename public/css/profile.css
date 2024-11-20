@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .main-content {
+    position: relative;
+    transition: transform 0.3s ease; 
+  }
+  
+  header {
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .profile-container {
+    margin-top: 30px;
+  }
+  
+  .profile-info {
+    margin-bottom: 20px;
+  }
+  
+  .info{
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+  }
+  
+  input.input-field {
+    display: none;
+    margin-top: 5px;
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input.input-field:focus {
+    border-color: #007bff;
+  }
+  
+  .profile-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #305375;
+    color: white;
+    padding: 50px 20px; 
+    box-sizing: border-box;
+    position: fixed;
+    left: -250px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    transition: left 0.3s ease; 
+  }
+  
+  
+  .sidebar h2 {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; 
+    flex-grow: 1; 
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px; 
+  }
+  
+  .sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+  }
+  
+  .sidebar ul li a:hover {
+    background-color: #547291;
+    color: white;
+  }
+  
+  
+  .sidebar ul li#logout {
+    background-color: rgba(198, 198, 209, 0.584);
+    border-radius: 10%;
+    margin-top: auto; 
+    text-align: center;
+  }
+  
+  
+  .sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    background-color: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    z-index: 100;
+  }
+  
+  
+  .sidebar-toggle:hover {
+    background-color: transparent;
+    color: #333;
+  }
+  

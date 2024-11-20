@@ -9,14 +9,23 @@ body {
   display: flex;
   height: 100vh;
   width: 100%;
+  transition: margin-left 0.3s ease; 
 }
 
 .sidebar {
   width: 250px;
-  background-color: rgb(83, 126, 62);
+  background-color: #305375;
   color: white;
   padding: 20px;
   box-sizing: border-box;
+  position: fixed;
+  left: -250px; 
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  transition: left 0.3s ease; 
 }
 
 .sidebar h2 {
@@ -28,6 +37,14 @@ body {
 .sidebar ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column; 
+  flex-grow: 1; 
+}
+
+.sidebar ul li {
+  margin-bottom: 10px; 
 }
 
 .sidebar ul li a {
@@ -39,8 +56,30 @@ body {
 }
 
 .sidebar ul li a:hover {
-  background-color: #34495e;
+  background-color: #547291;
   color: white;
+}
+
+
+.sidebar ul li#logout {
+  background-color: rgba(198, 198, 209, 0.584);
+  border-radius: 10%;
+  margin-top: auto; 
+  text-align: center;
+}
+
+
+
+.sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+  background-color: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .main-body {
@@ -49,6 +88,7 @@ body {
   padding: 20px;
   background-color: #f4f4f9;
   overflow-y: auto;
+  transition: margin-left 0.3s ease;
 }
 
 header h1 {
@@ -69,6 +109,7 @@ header h1 {
   font-size: 2rem;
   color: #000000;
 }
+
 
 #file-info {
   font-size: 1.5rem;
@@ -108,7 +149,7 @@ button.detect:hover {
 }
 
 .upload-button {
-  background-image: url("https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Logo-Transparent-File.png");
+  background-image: url("https://static.vecteezy.com/system/resources/previews/015/337/675/non_2x/transparent-upload-icon-free-png.png");
   background-size: cover;
   background-repeat: no-repeat;
   color: rgba(255, 253, 253, 0);
@@ -118,11 +159,21 @@ button.detect:hover {
   cursor: pointer;
   border-radius: 8px;
   position: relative;
+  overflow: hidden;
 }
-#text {
-  color: rgba(25, 24, 24, 0.575);
-  font-size: large;
-  font-size: 150%;
+
+.upload-button img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+}
+
+#fileInput {
+  display: none;
 }
 
 .image-frame {
@@ -146,4 +197,25 @@ button.detect:hover {
 
 #placeholder-text {
   color: #666;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.upload-container {
+  margin-bottom: 1rem; 
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row; 
+  gap: 15px; 
+  margin-left: auto; 
+}
+
+#file-info {
+  margin-top: 1rem;
 }

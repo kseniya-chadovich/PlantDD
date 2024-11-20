@@ -7,17 +7,26 @@
     <link rel="stylesheet" href="/css/history.css">
 </head>
 <body>
-    <!-- Top-right corner buttons -->
-    <div class="corner-buttons">
-        <button onclick="goHome()">Home</button>
-        <button onclick="logout()">Logout</button>
+    <!-- Button to toggle sidebar -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="/html/launchingPage.html" id="launchingPage">Home</a></li>
+        <li><a href="/html/profile.html" id="profile">View Profile</a></li>
+        <li id="logout"><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
     </div>
 
-    <div class="history-container">
+    <div class="main-content">
+      <div class="history-container">
         <h1>Search History</h1>
         <div id="history-list" class="history-list">
-            <!-- History items will be dynamically added here -->
+          <!-- History items will be dynamically added here -->
         </div>
+      </div>
     </div>
     <script src="/js/history.js"></script>
 

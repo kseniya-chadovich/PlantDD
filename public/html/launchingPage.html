@@ -8,11 +8,16 @@
   </head>
   <body>
     <div class="container">
+      <!-- Button to toggle sidebar -->
+      <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+      <!-- Sidebar -->
       <div class="sidebar">
         <h2>Menu</h2>
         <ul>
           <li><a href="/html/history.html" id="history">View History</a></li>
-          <li><a href="#" onclick="logout()">Logout</a></li>
+          <li><a href="/html/profile.html" id = "profile">View Profile</a></li>
+          <li id = "logout"><a href="#" onclick="logout()">Logout</a></li>
         </ul>
       </div>
 
@@ -27,30 +32,21 @@
 
             <div class="upload-section">
               <h3>Upload a Plant Image:</h3>
-
               <div class="upload-container">
-                <button id="upload-btn" class="upload-button">
-                  <span id = "text"><h4>Click here to upload</h4></span>
-                </button>
+                <button id="upload-btn" class="upload-button"></button>
               </div>
-                <div class="image-frame" id="image-preview">
-                  <span id="placeholder-text">Image Preview</span>
+              <div class="action-container">
+                <div class="button-container">
+                  <button class="detect">Detect</button>
+                  <button class="save">Save</button>
                 </div>
-              
-
-              <input
-                type="file"
-                id="fileInput"
-                name="file"
-                accept="image/*"
-                required
-                style="display: none"
-              />
-
-              <button class="detect">Detect</button>
+                <div class="image-preview-container" id="image-preview-container" style="display: none;">
+                  <img id="image-preview" src="" alt="Image Preview" />
+                </div>
+              </div>
+              <input type="file" id="fileInput" name="file" accept="image/*" required style="display: none" />
               <div class="info" id="file-info">
                 Disease: <span id="answer">Answer</span>
-                <button class="save">Save</button>
               </div>
             </div>
           </div>
