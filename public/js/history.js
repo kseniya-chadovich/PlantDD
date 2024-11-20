@@ -1,3 +1,11 @@
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig); 
+  console.log("app does not exist in history, creating another one");// Initialize Firebase with your config
+} else {
+  firebase.app(); // Use the default app if already initialized
+}
+const auth = firebase.auth();
+
 function goHome() {
   window.location.href = "/html/launchingPage.html";
 }

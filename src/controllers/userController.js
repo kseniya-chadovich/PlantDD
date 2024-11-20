@@ -41,15 +41,27 @@ const getUserInfo = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   try {
-    const uid = req.params.uid; // Get user ID from the route parameter
-    const { first_name, last_name, username } = req.body; // Get data from the request body
+    const uid = req.params.uid; 
+    const { firstName, lastName, userName } = req.body; 
+
+    // Check if all required fields are provided
+    if (!firstName || !lastName || !userName) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
 
     const userDocRef = db.collection("users").doc(uid);
 
+    // Check if the document exists
+    const userDoc = await userDocRef.get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user document
     await userDocRef.update({
-      first_name,
-      last_name,
-      username,
+      firstName,
+      lastName,
+      userName,
     });
 
     return res.status(200).json({ message: "User info updated successfully" });
@@ -58,6 +70,7 @@ const updateUserInfo = async (req, res) => {
     return res.status(500).json({ message: "Failed to update user info" });
   }
 };
+
 
 const deleteUser = async (req, res) => {
   try {

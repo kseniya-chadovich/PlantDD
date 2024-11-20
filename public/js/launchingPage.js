@@ -1,11 +1,38 @@
-function displayUserInfo() {
-  const username = localStorage.getItem("Username");
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig); 
+  console.log("app does not exist in launching page, creating another one");// Initialize Firebase with your config
+} else {
+  firebase.app(); // Use the default app if already initialized
+}
 
-  document.getElementById("welcome-text").textContent = `Welcome, ${username}!`;
+const auth = firebase.auth();
+let statusOfLog = "notuser";
+
+function displayUserInfoForEdit() {
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      statusOfLog = "user";
+      console.log("User is signed in.");
+      console.log("UID: ", user.uid)
+
+
+      try {
+        const data = await getUserInfo(user.uid); // Wait for the user data to resolve
+        console.log("userName: ", data.userName);
+
+        const username = data.userName || 'user!';  
+        document.getElementById("welcome-text").textContent = `Welcome, ${username}!`;
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    } else {
+      console.log("No user is signed in.");
+    }
+  });
 }
 
 window.onload = function () {
-  displayUserInfo();
+  displayUserInfoForEdit();
 };
 
 document.getElementById("upload-btn").addEventListener("click", function () {
@@ -47,5 +74,26 @@ function toggleSidebar() {
   } else {
     sidebar.style.left = "0px"; // Show sidebar
     mainBody.style.marginLeft = "300px"; // Push main body to the right (sidebar width + gap)
+  }
+}
+
+async function getUserInfo(uid){
+  let userData;
+
+  try {
+    console.log("In the function getUserInfo");
+    const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/users/getInfo/${uid}`);
+
+    if (!response.ok) {
+      const data = await response.json();
+      console.error("Error fetching user info: ", data.message);
+      return;
+    }
+
+    userData = await response.json();
+    console.log("User info:", userData);
+    return userData;
+  } catch (error) {
+    console.error("Error:", error);
   }
 }

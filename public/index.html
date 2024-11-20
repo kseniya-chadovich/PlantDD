@@ -60,25 +60,13 @@
     <button id = "login" type="submit" class="login-button">Login</button><br>
     <button id = "notuser" type="submit" class="login-button">Use without registering</button><br>
   
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <!-- Firebase Config -->
+  <script src="/js/firebase-config.js"></script>
+
 <script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
-
-  // Firebase configuration
-  const LocalFirebaseConfig = {
-  apiKey: "AIzaSyDrBrPuFDQ0FactSP0L2IByXiDpn5ApTQs",
-  authDomain: "wheatplant-ea05f.firebaseapp.com",
-  projectId: "wheatplant-ea05f",
-  storageBucket: "wheatplant-ea05f.firebasestorage.app",
-  messagingSenderId: "226944092427",
-  appId: "1:226944092427:web:cebb6a9d993c94bce27a0e",
-  measurementId: "G-YXMRE8S7JX",
-};
-
-  const app = initializeApp(LocalFirebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
 
   document.getElementById("signup").addEventListener("click", () => {
       window.location.href = "/html/signup.html", "_blank", "width=800,height=600";

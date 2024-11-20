@@ -8,3 +8,9 @@ const firebaseConfig = {
   measurementId: "G-YXMRE8S7JX",
 };
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+  console.log("Firebase initialized in firebase-config");
+} else {
+  console.log("Firebase app already initialized");
+}

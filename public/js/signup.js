@@ -1,4 +1,11 @@
-const apiUrl = "https://wheatdiseasedetector.onrender.com";
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig); 
+  console.log("app does not exist in log in, creating another one");// Initialize Firebase with your config
+} else {
+  firebase.app(); // Use the default app if already initialized
+}
+
+const auth = firebase.auth();
 
 const userNameInput = document.getElementById("UserName");
 const emailInput = document.getElementById("email");
@@ -10,9 +17,6 @@ const passwordInput = document.getElementById("password");
 const passwordInputConf = document.getElementById("passwordConfirmation"); 
 const togglePassword1 = document.getElementById("togglePassword1");
 const togglePassword2 = document.getElementById("togglePassword2");
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 
 
 togglePassword1.addEventListener("click", () => {

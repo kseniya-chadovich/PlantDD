@@ -1,9 +1,11 @@
-// Ensure Firebase is initialized
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig); // Initialize Firebase with your config
+  firebase.initializeApp(firebaseConfig); 
+  console.log("app does not exist in log in, creating another one");// Initialize Firebase with your config
 } else {
   firebase.app(); // Use the default app if already initialized
 }
+
+const auth = firebase.auth();
 
 async function handleLogin(event) {
   event.preventDefault();
