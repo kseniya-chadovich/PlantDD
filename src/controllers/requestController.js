@@ -53,10 +53,6 @@ const getRequestsByUID = async (req, res) => {
 };
 
 
-function getRequestsByUID(){
-  return null;
-}
-
 // Export controller functions
 module.exports = {
   createRequest,
