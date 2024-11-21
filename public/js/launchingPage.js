@@ -83,24 +83,20 @@ function toggleSidebar() {
 
 document.getElementById("save").addEventListener("click", async function () {
   const fileInput = document.getElementById("fileInput");
-  const file = fileInput.files[0]; // Extract the file from the input
+  const file = fileInput.files[0];
 
   if (!file) {
-    console.error("No file selected.");
     alert("Please select a file before saving.");
     return;
   }
 
-
-  // Prepare FormData
   const currentUID = await getCurrentUserUID();
-  console.log("Currrent UID: ", currentUID);
+
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("uid", currentUID); // Replace with dynamic user UID
-  formData.append("result", "Random Text For Now"); // Replace with actual result string
+  formData.append("uid", currentUID);
+  formData.append("resultText", "Random Text For Now");
 
-  // Send the FormData to the backend
   try {
     const response = await fetch(
       `https://wheatdiseasedetector.onrender.com/api/requests/createRequest`,
@@ -120,6 +116,7 @@ document.getElementById("save").addEventListener("click", async function () {
     console.error("Error:", error);
   }
 });
+
 
 
 

@@ -1,6 +1,5 @@
 require('dotenv').config();
 const admin = require('firebase-admin');
-const { Storage } = require("@google-cloud/storage");
 
 console.log("FIREBASE_CONFIG:", process.env.FIREBASE_CONFIG);
 

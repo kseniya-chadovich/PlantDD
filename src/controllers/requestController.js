@@ -2,8 +2,8 @@ const { db, auth, bucket } = require("../config/firebase");
 
 const createRequest = async (req, res) => {
   try {
-    const { uid, resultText } = req.body; // Extract user ID and result text from the request
-    const file = req.file; // File object from Multer middleware
+    const { uid, resultText } = req.body;
+    const file = req.file; // File uploaded via Multer
 
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });
@@ -11,25 +11,26 @@ const createRequest = async (req, res) => {
 
     // Generate a unique file path in the Firebase Storage bucket
     const fileName = `requests/${uid}/${Date.now()}-${file.originalname}`;
-    const blob = bucket.file(fileName);
-    const stream = blob.createWriteStream({
+    const fileUpload = bucket.file(fileName);
+
+    // Create a write stream and upload the file
+    const stream = fileUpload.createWriteStream({
       metadata: {
         contentType: file.mimetype,
       },
     });
 
-    // Handle stream events
     stream.on("error", (error) => {
       console.error("Error uploading file:", error);
       return res.status(500).json({ message: "Failed to upload file" });
     });
 
     stream.on("finish", async () => {
-      // Make the file publicly accessible and get the URL
-      await blob.makePublic();
-      const fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+      // Make the file publicly accessible (optional)
+      await fileUpload.makePublic();
+      const fileURL = `https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`;
 
-      // Save metadata in Firestore
+      // Save metadata to Firestore
       const requestDoc = {
         uid,
         fileURL,
@@ -39,18 +40,16 @@ const createRequest = async (req, res) => {
 
       await db.collection("requests").add(requestDoc);
 
-      return res.status(201).json({
-        message: "Request created successfully",
-        fileURL,
-      });
+      res.status(201).json({ message: "Request created successfully", fileURL });
     });
 
-    stream.end(file.buffer); // Finalize the upload stream
+    stream.end(file.buffer);
   } catch (error) {
     console.error("Error creating request:", error);
-    return res.status(500).json({ message: "Failed to create request" });
+    res.status(500).json({ message: "Failed to create request" });
   }
 };
+
 
 function getRequestsByUID(){
   return null;

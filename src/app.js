@@ -8,13 +8,13 @@ const requestRoutes = require("./routes/requestRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigins = ["https://wheatplant-ea05f.web.app"];
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ["GET", "POST", "PUT", "DELETE"], // Add the HTTP methods you need
-  credentials: true, // If you're using cookies/authentication
-}));
-  // Allow cross-origin requests
+const corsOptions = {
+  origin: "https://wheatplant-ea05f.web.app", // Add your frontend origin here
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json()); // Parse JSON request bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/users", userRoutes);
