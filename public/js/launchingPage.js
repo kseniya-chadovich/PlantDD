@@ -52,29 +52,6 @@ document.getElementById("upload-btn").addEventListener("click", function () {
         };
         reader.readAsDataURL(file);
 
-        const currentUID = getCurrentUserUID();
-        
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("uid", currentUID); // Replace with dynamic user UID
-      formData.append("resultText", "Random Text For Now"); // Replace with actual result string
-
-      // Upload the file to the backend
-      try {
-        const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/requests/createRequest`, {
-          method: "POST",
-          body: formData,
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-          console.log("File uploaded successfully:", result.fileURL);
-        } else {
-          console.error("Error uploading file:", result.message);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
       } else {
         button.innerHTML = "";
       }
@@ -100,6 +77,54 @@ function toggleSidebar() {
     mainBody.style.marginLeft = "300px"; // Push main body to the right (sidebar width + gap)
   }
 }
+
+
+
+
+document.getElementById("save").addEventListener("click", async function () {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0]; // Extract the file from the input
+
+  if (!file) {
+    console.error("No file selected.");
+    alert("Please select a file before saving.");
+    return;
+  }
+
+
+  // Prepare FormData
+  const currentUID = getCurrentUserUID();
+  console.log("Currrent UID: ", currentUID);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("uid", currentUID); // Replace with dynamic user UID
+  formData.append("result", "Random Text For Now"); // Replace with actual result string
+
+  // Send the FormData to the backend
+  try {
+    const response = await fetch(
+      `https://wheatdiseasedetector.onrender.com/api/requests/createRequest`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+    if (response.ok) {
+      console.log("File uploaded successfully:", result.fileURL);
+    } else {
+      console.error("Error uploading file:", result.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+
+
+
+
+
 
 async function getUserInfo(uid){
   let userData;
