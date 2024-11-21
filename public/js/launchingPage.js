@@ -88,41 +88,59 @@ document.getElementById("save").addEventListener("click", async function () {
       return;
   }
 
-  const currentUID = await getCurrentUserUID();  // Get current user UID
-
-  // Prepare image compression options
+  // Image compression options
   const options = {
-      maxSizeMB: 2,  // Maximum size of the image in MB
-      maxWidthOrHeight: 1280,  // Maximum width or height of the image
-      useWebWorker: true,  // Optional: use web workers for better performance
+      maxSizeMB: 2,  // Max file size (MB)
+      maxWidthOrHeight: 1280,  // Max width or height of the image
+      useWebWorker: true,  // Optional: use web worker for compression
   };
 
   try {
-      // Compress the image using the browser-image-compression library
+      // Compress the image using browser-image-compression
       const compressedFile = await imageCompression(file, options);
 
-      // Prepare form data for the request
-      const formData = new FormData();
-      formData.append("file", compressedFile);
-      formData.append("uid", currentUID);
-      formData.append("resultText", "Random Text For Now");
+      // Convert the compressed image to a base64 string
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+          const base64ImageString = e.target.result;  // Base64 string
+          const fileName = `${Date.now()}_${file.name}`;  // Unique file name based on timestamp
 
-      // Send the image to the server via fetch
-      const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
-          method: "POST",
-          body: formData,
-      });
+          try {
+              // Send the base64-encoded image and file name to the backend
+              const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
+                  method: "POST",
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                      base64ImageString: base64ImageString,
+                      fileName: fileName,
+                  }),
+              });
 
-      const result = await response.json();
-      if (response.ok) {
-          console.log("File uploaded successfully:", result.fileURL);
-      } else {
-          console.error("Error uploading file:", result.message);
-      }
+              const result = await response.json();
+
+              if (response.ok && result.msg === 'SUCCESS') {
+                  console.log("File uploaded successfully:", result.pictureURL);
+                  // You can use result.pictureURL as needed here (e.g., display the image, store URL, etc.)
+              } else {
+                  console.error("Error uploading file:", result.error);
+              }
+          } catch (error) {
+              console.error("Error from Firebase:", error);
+          }
+      };
+
+      reader.readAsDataURL(compressedFile);  // Convert the compressed file to base64
   } catch (error) {
       console.error("Error compressing image:", error);
   }
-});
+}); 
+
+
+
+
+
 
 
 async function getUserInfo(uid){
