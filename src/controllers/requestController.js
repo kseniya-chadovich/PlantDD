@@ -1,66 +1,63 @@
-// src/controllers/requestController.js
-const Request = require('../models/request');
+const { db, auth, bucket } = require("../config/firebase");
 
-// Helper function to handle errors
-const handleError = (res, error, statusCode = 500) => {
-  res.status(statusCode).json({ error: error.message });
-};
-
-// Function to create a new request
 const createRequest = async (req, res) => {
   try {
-    const request = await addRequest(req.body);
-    res.status(201).json(request);
-  } catch (error) {
-    handleError(res, error, 400);
-  }
-};
+    const { uid, resultText } = req.body; // Extract user ID and result text from the request
+    const file = req.file; // File object from Multer middleware
 
-// Function to get all requests
-const getAllRequests = async (req, res) => {
-  try {
-    const requests = await fetchAllRequests();
-    res.status(200).json(requests);
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
-// Function to get a specific request by ID
-const getRequestById = async (req, res) => {
-  try {
-    const request = await fetchRequestById(req.params.id);
-    if (!request) {
-      return handleError(res, new Error('Request not found'), 404);
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
-    res.status(200).json(request);
+
+    // Generate a unique file path in the Firebase Storage bucket
+    const fileName = `requests/${uid}/${Date.now()}-${file.originalname}`;
+    const blob = bucket.file(fileName);
+    const stream = blob.createWriteStream({
+      metadata: {
+        contentType: file.mimetype,
+      },
+    });
+
+    // Handle stream events
+    stream.on("error", (error) => {
+      console.error("Error uploading file:", error);
+      return res.status(500).json({ message: "Failed to upload file" });
+    });
+
+    stream.on("finish", async () => {
+      // Make the file publicly accessible and get the URL
+      await blob.makePublic();
+      const fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+
+      // Save metadata in Firestore
+      const requestDoc = {
+        uid,
+        fileURL,
+        resultText,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      await db.collection("requests").add(requestDoc);
+
+      return res.status(201).json({
+        message: "Request created successfully",
+        fileURL,
+      });
+    });
+
+    stream.end(file.buffer); // Finalize the upload stream
   } catch (error) {
-    handleError(res, error);
+    console.error("Error creating request:", error);
+    return res.status(500).json({ message: "Failed to create request" });
   }
 };
 
-// Wrapper for database interaction - adds a new request to the database
-const addRequest = async ({ user_id, image_url }) => {
-  return await Request.create({
-    user_id,
-    image_url,
-    uploaded_at: new Date(),
-  });
-};
-
-// Wrapper for database interaction - fetches all requests
-const fetchAllRequests = async () => {
-  return await Request.findAll();
-};
-
-// Wrapper for database interaction - fetches a request by ID
-const fetchRequestById = async (id) => {
-  return await Request.findByPk(id);
-};
+function getRequestsByUID(){
+  return null;
+}
 
 // Export controller functions
 module.exports = {
   createRequest,
-  getAllRequests,
-  getRequestById,
+  getRequestsByUID,
 };

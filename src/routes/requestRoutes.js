@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const requestController = require('../controllers/requestController');
+const upload = require("../config/multer");
 
-router.post('/createRequest', requestController.createRequest);
-router.get('/getAllRequests', requestController.getAllRequests);
-router.get('/getRequestsByID/:id', requestController.getRequestById);
+router.post('/createRequest', upload.single("file"), requestController.createRequest);
+router.get('/getRequestsByUID/:uid', requestController.getRequestByUId);
 
 module.exports = router;

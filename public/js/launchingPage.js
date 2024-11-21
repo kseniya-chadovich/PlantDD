@@ -40,7 +40,7 @@ document.getElementById("upload-btn").addEventListener("click", function () {
 
   document
     .getElementById("fileInput")
-    .addEventListener("change", function (event) {
+    .addEventListener("change", async function (event) {
       const file = event.target.files[0];
       const button = document.getElementById("upload-btn");
 
@@ -51,6 +51,30 @@ document.getElementById("upload-btn").addEventListener("click", function () {
           button.innerHTML = `<img src="${e.target.result}" alt="Image Preview" />`;
         };
         reader.readAsDataURL(file);
+
+        const currentUID = getCurrentUserUID();
+        
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("uid", currentUID); // Replace with dynamic user UID
+      formData.append("resultText", "Random Text For Now"); // Replace with actual result string
+
+      // Upload the file to the backend
+      try {
+        const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/requests/createRequest`, {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          console.log("File uploaded successfully:", result.fileURL);
+        } else {
+          console.error("Error uploading file:", result.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
       } else {
         button.innerHTML = "";
       }
@@ -96,4 +120,16 @@ async function getUserInfo(uid){
   } catch (error) {
     console.error("Error:", error);
   }
+}
+
+function getCurrentUserUID() {
+  return new Promise((resolve, reject) => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        resolve(null);
+      }
+    });
+  });
 }

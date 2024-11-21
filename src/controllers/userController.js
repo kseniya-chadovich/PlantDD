@@ -1,4 +1,4 @@
-const { db, auth } = require("../config/firebase"); // Import firestore and auth
+const { db, auth, bucket } = require("../config/firebase"); // Import firestore and auth
 
 const registerUser = async (req, res) => {
   try {
