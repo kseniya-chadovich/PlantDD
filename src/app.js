@@ -11,7 +11,7 @@ const app = express();
 const corsOptions = {
   origin: "https://wheatplant-ea05f.web.app", // Add your frontend origin here
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
 };
 
 app.use(cors(corsOptions));
