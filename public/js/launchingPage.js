@@ -90,10 +90,11 @@ document.getElementById("save").addEventListener("click", async function () {
 
   // Image compression options
   const options = {
-      maxSizeMB: 2,  // Max file size (MB)
-      maxWidthOrHeight: 1280,  // Max width or height of the image
-      useWebWorker: true,  // Optional: use web worker for compression
-  };
+    maxSizeMB: 0.5,  // Max file size 0.5MB
+    maxWidthOrHeight: 800,  // Max width/height
+    useWebWorker: true,  // Use web worker for compression
+    maxQuality: 0.6,  // Quality set to 60% of original
+};
 
   try {
       // Compress the image using browser-image-compression
