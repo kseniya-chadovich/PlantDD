@@ -79,8 +79,6 @@ function toggleSidebar() {
 }
 
 
-
-
 document.getElementById("save").addEventListener("click", async function () {
   const fileInput = document.getElementById("fileInput");
   const file = fileInput.files[0];
@@ -90,31 +88,40 @@ document.getElementById("save").addEventListener("click", async function () {
     return;
   }
 
-  const currentUID = await getCurrentUserUID();
+  // Convert the file to base64 string for sending
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    const base64ImageString = e.target.result;  // Base64 string
+    const fileName = `${Date.now()}_${file.name}`;  // Unique file name based on timestamp
 
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("uid", currentUID);
-  formData.append("resultText", "Random Text For Now");
-
-  try {
-    const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/createRequest",
-      {
+    try {
+      // Send the image data to the backend
+      const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {  // Adjust to your API endpoint
         method: "POST",
-        body: formData,
-      }
-    );
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          base64ImageString: base64ImageString,
+          fileName: fileName,
+        }),
+      });
 
-    const result = await response.json();
-    if (response.ok) {
-      console.log("File uploaded successfully:", result.fileURL);
-    } else {
-      console.error("Error uploading file:", result.message);
+      const result = await response.json();
+
+      if (response.ok && result.msg === 'SUCCESS') {
+        console.log("File uploaded successfully:", result.pictureURL);
+        // You can use result.pictureURL as needed here (e.g., to display the image, store in Firestore, etc.)
+      } else {
+        console.error("Error uploading file:", result.error);
+      }
+    } catch (error) {
+      console.error("Error from Firebase:", error);
     }
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  };
+  reader.readAsDataURL(file);  // Read the file as base64
 });
+
 
 
 

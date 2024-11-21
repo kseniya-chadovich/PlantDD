@@ -1,5 +1,6 @@
 require('dotenv').config();
 const admin = require('firebase-admin');
+const { Storage } = require('@google-cloud/storage');
 
 console.log("FIREBASE_CONFIG:", process.env.FIREBASE_CONFIG);
 
@@ -20,6 +21,7 @@ const db = admin.firestore();
 const auth = admin.auth();  // Firebase Auth instance
 const bucket = admin.storage().bucket();
 
+
 db.collection("test").get()
   .then(snapshot => {
     console.log("Firebase connection successful!");
@@ -27,5 +29,7 @@ db.collection("test").get()
   .catch(error => {
     console.error("Firebase connection error:", error);
   });
+
+
 
 module.exports = { db, auth, bucket };
