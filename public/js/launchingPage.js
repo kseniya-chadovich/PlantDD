@@ -93,7 +93,7 @@ document.getElementById("save").addEventListener("click", async function () {
 
 
   // Prepare FormData
-  const currentUID = getCurrentUserUID();
+  const currentUID = await getCurrentUserUID();
   console.log("Currrent UID: ", currentUID);
   const formData = new FormData();
   formData.append("file", file);
