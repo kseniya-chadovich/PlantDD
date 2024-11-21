@@ -98,8 +98,7 @@ document.getElementById("save").addEventListener("click", async function () {
   formData.append("resultText", "Random Text For Now");
 
   try {
-    const response = await fetch(
-      `https://wheatdiseasedetector.onrender.com/api/requests/createRequest`,
+    const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/createRequest",
       {
         method: "POST",
         body: formData,
