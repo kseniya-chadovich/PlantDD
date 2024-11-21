@@ -15,9 +15,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 app.use(express.json()); // Parse JSON request bodies
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '10mb' }));  // You can adjust the size as needed
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use("/api/users", userRoutes);
 app.use("/api/requests", requestRoutes);
 

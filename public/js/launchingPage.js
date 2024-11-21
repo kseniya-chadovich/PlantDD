@@ -84,49 +84,45 @@ document.getElementById("save").addEventListener("click", async function () {
   const file = fileInput.files[0];
 
   if (!file) {
-    alert("Please select a file before saving.");
-    return;
+      alert("Please select a file before saving.");
+      return;
   }
 
-  // Convert the file to base64 string for sending
-  const reader = new FileReader();
-  reader.onload = async function (e) {
-    const base64ImageString = e.target.result;  // Base64 string
-    const fileName = `${Date.now()}_${file.name}`;  // Unique file name based on timestamp
+  const currentUID = await getCurrentUserUID();  // Get current user UID
 
-    try {
-      // Send the image data to the backend
-      const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {  // Adjust to your API endpoint
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          base64ImageString: base64ImageString,
-          fileName: fileName,
-        }),
+  // Prepare image compression options
+  const options = {
+      maxSizeMB: 2,  // Maximum size of the image in MB
+      maxWidthOrHeight: 1280,  // Maximum width or height of the image
+      useWebWorker: true,  // Optional: use web workers for better performance
+  };
+
+  try {
+      // Compress the image using the browser-image-compression library
+      const compressedFile = await imageCompression(file, options);
+
+      // Prepare form data for the request
+      const formData = new FormData();
+      formData.append("file", compressedFile);
+      formData.append("uid", currentUID);
+      formData.append("resultText", "Random Text For Now");
+
+      // Send the image to the server via fetch
+      const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
+          method: "POST",
+          body: formData,
       });
 
       const result = await response.json();
-
-      if (response.ok && result.msg === 'SUCCESS') {
-        console.log("File uploaded successfully:", result.pictureURL);
-        // You can use result.pictureURL as needed here (e.g., to display the image, store in Firestore, etc.)
+      if (response.ok) {
+          console.log("File uploaded successfully:", result.fileURL);
       } else {
-        console.error("Error uploading file:", result.error);
+          console.error("Error uploading file:", result.message);
       }
-    } catch (error) {
-      console.error("Error from Firebase:", error);
-    }
-  };
-  reader.readAsDataURL(file);  // Read the file as base64
+  } catch (error) {
+      console.error("Error compressing image:", error);
+  }
 });
-
-
-
-
-
-
 
 
 async function getUserInfo(uid){
