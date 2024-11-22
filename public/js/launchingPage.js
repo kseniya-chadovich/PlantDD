@@ -35,29 +35,6 @@ window.onload = function () {
   displayUserInfoForEdit();
 };
 
-document.getElementById("upload-btn").addEventListener("click", function () {
-  document.getElementById("fileInput").click();
-
-  document
-    .getElementById("fileInput")
-    .addEventListener("change", async function (event) {
-      const file = event.target.files[0];
-      const button = document.getElementById("upload-btn");
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          // Add the preview image inside the upload button
-          button.innerHTML = `<img src="${e.target.result}" alt="Image Preview" />`;
-        };
-        reader.readAsDataURL(file);
-
-      } else {
-        button.innerHTML = "";
-      }
-    });
-});
-
 function logout() {
   localStorage.clear();
   window.location.href = "/html/login.html";
@@ -79,64 +56,112 @@ function toggleSidebar() {
 }
 
 
-document.getElementById("save").addEventListener("click", async function () {
-  const fileInput = document.getElementById("fileInput");
-  const file = fileInput.files[0];
 
-  if (!file) {
-      alert("Please select a file before saving.");
-      return;
-  }
 
-  // Image compression options
-  const options = {
-    maxSizeMB: 0.5,  // Max file size 0.5MB
-    maxWidthOrHeight: 800,  // Max width/height
-    useWebWorker: true,  // Use web worker for compression
-    maxQuality: 0.6,  // Quality set to 60% of original
+
+
+
+
+document.getElementById("upload-btn").addEventListener("click", function () {
+  document.getElementById("fileInput").click();
+
+  document
+    .getElementById("fileInput")
+    .addEventListener("change", async function (event) {
+      const file = event.target.files[0];
+      const button = document.getElementById("upload-btn");
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          // Add the preview image inside the upload button
+          button.innerHTML = `<img src="${e.target.result}" alt="Image Preview" />`;
+        };
+        reader.readAsDataURL(file);
+
+        uploadFile(event);
+
+      } else {
+        button.innerHTML = "";
+      }
+    });
+});
+
+
+
+let fileName = ""; // Variable to hold the file name
+let selectedFile = ""; // Variable to hold the base64-encoded file data
+
+// Function to set the file name
+const setFileName = (name) => {
+  fileName = name;
 };
 
-  try {
-      // Compress the image using browser-image-compression
-      const compressedFile = await imageCompression(file, options);
+// Function to set the selected file
+const setSelectedFile = (file) => {
+  selectedFile = file;
+};
 
-      // Convert the compressed image to a base64 string
-      const reader = new FileReader();
-      reader.onload = async function (e) {
-          const base64ImageString = e.target.result;  // Base64 string
-          const fileName = `${Date.now()}_${file.name}`;  // Unique file name based on timestamp
+// Function to handle the file selection and encoding process
+const uploadFile = (e) => {
+  const file = e.target.files[0];
 
-          try {
-              // Send the base64-encoded image and file name to the backend
-              const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
-                  method: "POST",
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                      base64ImageString: base64ImageString,
-                      fileName: fileName,
-                  }),
-              });
-
-              const result = await response.json();
-
-              if (response.ok && result.msg === 'SUCCESS') {
-                  console.log("File uploaded successfully:", result.pictureURL);
-                  // You can use result.pictureURL as needed here (e.g., display the image, store URL, etc.)
-              } else {
-                  console.error("Error uploading file:", result.error);
-              }
-          } catch (error) {
-              console.error("Error from Firebase:", error);
-          }
-      };
-
-      reader.readAsDataURL(compressedFile);  // Convert the compressed file to base64
-  } catch (error) {
-      console.error("Error compressing image:", error);
+  if (!file) {
+    alert("Please select a file.");
+    return;
   }
-}); 
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file); // Read the file as a Base64 data URL
+  reader.onloadend = () => {
+    setFileName(file.name); // Save the file name
+    setSelectedFile(reader.result); // Save the Base64-encoded file data
+  };
+};
+
+// Function to send the Base64 file data and file name to the backend
+const sendImageData = async () => {
+  try {
+    if (!selectedFile) {
+      alert("No file selected. Please upload a file before saving.");
+      return;
+    }
+
+    const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        base64ImageString: selectedFile,
+        fileName: fileName,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.msg === "SUCCESS") {
+      console.log("File uploaded successfully:", result.pictureURL);
+      alert("Upload successful!");
+      setFileName(""); // Reset the file name
+      setSelectedFile(""); // Reset the selected file data
+    } else {
+      console.error("Upload failed:", result.error);
+    }
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+};
+
+// Event listener for the "save" button
+document.getElementById("save").addEventListener("click", async () => {
+  await sendImageData(); // Call the function to send the image data
+});
+
+// Event listener for file input
+document.getElementById("fileInput").addEventListener("change", (e) => {
+  uploadFile(e); // Call the function to handle file selection
+});
 
 
 
