@@ -20,7 +20,9 @@ async function handleLogin(event) {
 
   try {
     // Authenticate user with Firebase
-    const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+    const userCredential = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
 
     // Extract user information
     const user = userCredential.user;
@@ -44,9 +46,11 @@ async function handleLogin(event) {
         break;
       case "auth/wrong-password":
         alert("Incorrect password. Please try again.");
+        
         break;
       default:
         alert("An error occurred during login. Please try again.");
+        document.getElementById("forgot-password-link").style.display = "block";
         break;
     }
   }

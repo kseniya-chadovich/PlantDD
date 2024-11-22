@@ -12,7 +12,7 @@ function toggleSidebar() {
   const currentLeft = window.getComputedStyle(sidebar).left;
 
   if (currentLeft === "0px") {
-    sidebar.style.left = "-250px";
+    sidebar.style.left = "-280px";
     mainBody.style.marginLeft = "50px";
   } else {
     sidebar.style.left = "0px";

@@ -14,33 +14,36 @@
         Your browser does not support the video tag.
       </video>
       <div class="background-overlay"></div>
-      </div>
+    </div>
 
+    <div class="login">
+      <h2>Login to Plant Disease Detector</h2>
+      <form class="form" onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
 
-      <div class="login">
-        <h2>Login to Plant Disease Detector</h2>
-        <form class="form" onsubmit="handleLogin(event)">
-          <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required />
-          </div>
-          <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required />
-          </div>
-  
-          <button type="submit" class="login-button">Login</button>
-        </form>
-        <p class="signup-text">
-          Don't have an account? <a href="/html/signup.html">Sign up</a>
+        <p id="forgot-password-link" style="display: none">
+          <a href="#">Forgot Password?</a>
         </p>
-      </div>
+
+        <button type="submit" class="login-button">Login</button>
+      </form>
+      <p class="signup-text">
+        Don't have an account? <a href="/html/signup.html">Sign up</a>
+      </p>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-  <script src="/js/firebase-config.js"></script>
-  
-  <script src="/js/login.js"></script>
+    <script src="/js/firebase-config.js"></script>
+
+    <script src="/js/login.js"></script>
   </body>
 </html>
