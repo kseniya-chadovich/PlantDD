@@ -1,33 +1,35 @@
 const { db, auth, bucket } = require("../config/firebase");
-const stream = require('stream');
+const 
 
 const uploadImageToBucket = async (req, res) => {
   try {
-    const { base64ImageString, fileName } = req.body;  // Get the base64 string and file name from the request
+    const file = req.file; // Access the uploaded file via Multer
 
-    if (!base64ImageString || !fileName) {
-      return res.status(400).json({ msg: "Missing image data or file name" });
+    if (!file) {
+      return res.status(400).json({ msg: "No file uploaded" });
     }
 
-    // Extract MIME type and clean the base64 string
-    const mimeType = base64ImageString.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)[1];
-    const imageBuffer = Buffer.from(base64ImageString.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-    
+    const fileName = file.originalname; // Get the original file name
+    const mimeType = file.mimetype; // MIME type of the uploaded file
+    const imageBuffer = file.buffer; // File content as a buffer
+
     // Create a stream for the file
     const bufferStream = new stream.PassThrough();
     bufferStream.end(imageBuffer);
 
     // Define the file reference in Firebase Storage
-    const file = bucket.file(`images/${fileName}`);
-    
+    const firebaseFile = bucket.file(`images/${fileName}`);
+
     // Upload the file to Firebase Storage
-    bufferStream.pipe(file.createWriteStream({
-      metadata: {
-        contentType: mimeType
-      },
-      public: true,  // Make the file public
-      validation: 'md5',  // Validate the upload (optional)
-    }))
+    bufferStream.pipe(
+      firebaseFile.createWriteStream({
+        metadata: {
+          contentType: mimeType,
+        },
+        public: true, // Make the file public
+        validation: 'md5', // Validate the upload (optional)
+      })
+    )
       .on('error', function (err) {
         console.log('Error uploading image:', err);
         return res.status(500).json({ error: err.message });
@@ -35,12 +37,12 @@ const uploadImageToBucket = async (req, res) => {
       .on('finish', async function () {
         // Once the upload is finished, generate a signed URL
         try {
-          const signedUrls = await file.getSignedUrl({
-            action: 'read',  // Allow reading the file
-            expires: '03-09-2491',  // Long expiration date for the URL
+          const signedUrls = await firebaseFile.getSignedUrl({
+            action: 'read', // Allow reading the file
+            expires: '03-09-2491', // Long expiration date for the URL
           });
 
-          const pictureURL = signedUrls[0];  // The public URL of the uploaded image
+          const pictureURL = signedUrls[0]; // The public URL of the uploaded image
           return res.status(200).json({ msg: 'SUCCESS', pictureURL });
         } catch (err) {
           console.log('Error getting signed URL:', err);

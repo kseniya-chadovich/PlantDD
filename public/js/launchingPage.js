@@ -127,15 +127,13 @@ const sendImageData = async () => {
       return;
     }
 
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('fileName', file.name);
+
     const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        base64ImageString: selectedFile,
-        fileName: fileName,
-      }),
+      body: formData,
     });
 
     const result = await response.json();
