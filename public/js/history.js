@@ -27,3 +27,55 @@ function toggleSidebar() {
     mainBody.style.marginLeft = "300px";
   }
 }
+
+// Function to fetch the user's history
+async function fetchUserHistory() { 
+  try {
+    const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/requests/getLinks/${uid}`); 
+    const historyData = await response.json();
+
+    const historyList = document.getElementById('history-list');
+    historyList.innerHTML = ''; // Clear any existing content
+
+    if (!historyData.pairs || historyData.pairs.length === 0) {
+      // Case: No saved items
+      const noItemsMessage = document.createElement('p');
+      noItemsMessage.textContent = "You have no saved items.";
+      noItemsMessage.className = "no-items-message"; // Add a CSS class for styling
+      historyList.appendChild(noItemsMessage);
+    } else {
+      // Case: User has saved items
+      historyData.pairs.forEach((item) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = "history-item";
+
+        // Create image element
+        const img = document.createElement('img');
+        img.src = item.link; // Use the link retrieved from the backend
+        img.alt = "Uploaded image"; // Alt text for accessibility
+        img.onerror = () => {
+          img.src = "/images/placeholder.png"; // Fallback if the image fails to load
+        };
+        historyItem.appendChild(img);
+
+        // Create description paragraph
+        const description = document.createElement('p');
+        description.textContent = item.description || "No description available.";
+        historyItem.appendChild(description);
+
+        historyList.appendChild(historyItem);
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching user history:", error);
+
+    const historyList = document.getElementById('history-list');
+    historyList.innerHTML = '<p class="error-message">Failed to load your history. Please try again later.</p>';
+  }
+}
+
+window.onload = function () {
+  fetchUserHistory();
+};
+
+

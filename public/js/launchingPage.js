@@ -170,7 +170,7 @@ const storeLink = async (id, link) => {
     const result = await response.json();
 
     if (response.ok) {
-      alert("Link stored successfully! You can find it now in the "); // Alert for success
+      alert("Link stored successfully! You can find it now in the History section of the application."); // Alert for success
     } else {
       alert(`Failed to store the link: ${result.message}`); // Alert for failure
     }

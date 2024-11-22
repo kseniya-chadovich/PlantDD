@@ -34,7 +34,7 @@ async function handleLogin(event) {
     }
 
     // Successful login
-    alert(`Welcome back, ${user.email}!`);
+    alert(`Welcome back!`);
     window.location.href = "/html/launchingPage.html"; // Adjust redirect as needed
   } catch (error) {
     console.error("Login error:", error.message);

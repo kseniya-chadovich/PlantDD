@@ -97,20 +97,38 @@ const storeLinkToRequest = async (req, res) => {
 };
 
 
-
-
-
-
-
-// Example function for retrieving requests
 const getRequestsByUID = async (req, res) => {
   try {
-    const { uid } = req.params;
-    const snapshot = await db.collection('requests').where('uid', '==', uid).get();
-    const requests = snapshot.docs.map(doc => doc.data());
-    res.status(200).json(requests);
+    const { uid } = req.params; // Extract UID from the request parameters
+
+    // Validate input
+    if (!uid) {
+      return res.status(400).json({ message: "UID is required." });
+    }
+
+    // Reference the document for the user
+    const docRef = db.collection("requests").doc(uid);
+
+    // Get the current document for the user
+    const doc = await docRef.get();
+
+    if (doc.exists) {
+      // If the document exists, return the pairs array
+      const pairs = doc.data().pairs || [];
+      return res.status(200).json({
+        message: "Links retrieved successfully.",
+        pairs,
+      });
+    } else {
+      // If the document does not exist, return an empty response
+      return res.status(404).json({
+        message: "No data found for the provided UID.",
+        pairs: [],
+      });
+    }
   } catch (error) {
-    res.status(500).send({ message: 'Error fetching requests', error });
+    console.error("Error retrieving links:", error.message, error.stack);
+    return res.status(500).json({ message: `Failed to retrieve links: ${error.message}` });
   }
 };
 
