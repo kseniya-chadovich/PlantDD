@@ -49,6 +49,7 @@ async function handleLogin(event) {
         break;
       default:
         alert("An error occurred during login. Please try again.");
+        document.getElementById("forgot-password-link").style.display = "block";
         break;
     }
   }

@@ -47,7 +47,7 @@ function toggleSidebar() {
 
   // Toggle the sidebar visibility and move the main body accordingly
   if (currentLeft === "0px") {
-    sidebar.style.left = "-250px"; // Hide sidebar
+    sidebar.style.left = "-280px"; // Hide sidebar
     mainBody.style.marginLeft = "50px"; // Reset main body margin
   } else {
     sidebar.style.left = "0px"; // Show sidebar

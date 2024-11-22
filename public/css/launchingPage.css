@@ -13,13 +13,13 @@ body {
 }
 
 .sidebar {
-  width: 250px;
-  background-color: #305375;
+  width: 280px;
+  background-color: rgb(83, 126, 62);
   color: white;
   padding: 20px;
   box-sizing: border-box;
   position: fixed;
-  left: -250px; 
+  left: -280px; 
   top: 0;
   height: 100%;
   display: flex;
