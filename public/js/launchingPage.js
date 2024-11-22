@@ -88,7 +88,7 @@ document.getElementById("upload-btn").addEventListener("click", function () {
 });
 
 
-
+let file;
 let fileName = ""; // Variable to hold the file name
 let selectedFile = ""; // Variable to hold the base64-encoded file data
 
@@ -104,7 +104,7 @@ const setSelectedFile = (file) => {
 
 // Function to handle the file selection and encoding process
 const uploadFile = (e) => {
-  const file = e.target.files[0];
+  file = e.target.files[0];
 
   if (!file) {
     alert("Please select a file.");
@@ -120,15 +120,11 @@ const uploadFile = (e) => {
 };
 
 // Function to send the Base64 file data and file name to the backend
-const sendImageData = async () => {
+const sendImageData = async (file) => {
   try {
-    if (!selectedFile) {
-      alert("No file selected. Please upload a file before saving.");
-      return;
-    }
+    const formData = new FormData();
+    formData.append("file", file);
 
-  const formData = new FormData();
-  formData.append('file', file);
   formData.append('fileName', file.name);
 
     const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/uploadImage", {
@@ -153,7 +149,7 @@ const sendImageData = async () => {
 
 // Event listener for the "save" button
 document.getElementById("save").addEventListener("click", async () => {
-  await sendImageData(); // Call the function to send the image data
+  await sendImageData(file); // Call the function to send the image data
 });
 
 // Event listener for file input
