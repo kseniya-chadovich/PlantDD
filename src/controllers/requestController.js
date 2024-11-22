@@ -56,6 +56,52 @@ const uploadImageToBucket = async (req, res) => {
 };
 
 
+
+const storeLinkToRequest = async (req, res) => {
+  try {
+    const { uid, link } = req.body; // Extract UID and link from the request body
+
+    // Validate input
+    if (!uid || !link) {
+      return res.status(400).json({ message: "UID and link are required." });
+    }
+
+    // Reference the document for the user
+    const docRef = db.collection("requests").doc(uid);
+
+    // Get the current document for the user
+    const doc = await docRef.get();
+
+    if (doc.exists) {
+      // If the document exists, append the link to the existing array
+      const existingLinks = doc.data().links || [];
+      await docRef.set(
+        { links: [...existingLinks, link] }, // Add the new link to the array
+        { merge: true } // Ensure we do not overwrite other fields
+      );
+    } else {
+      // If the document does not exist, create it with the link in a new array
+      await docRef.set({
+        links: [link],
+      });
+    }
+
+    // Return a success response
+    return res.status(201).json({
+      message: "Link stored successfully",
+    });
+  } catch (error) {
+    console.error("Error storing the link:", error.message, error.stack);
+    return res.status(500).json({ message: `Failed to store the link: ${error.message}` });
+  }
+};
+
+
+
+
+
+
+
 // Example function for retrieving requests
 const getRequestsByUID = async (req, res) => {
   try {
@@ -72,5 +118,6 @@ const getRequestsByUID = async (req, res) => {
 // Export controller functions
 module.exports = {
   uploadImageToBucket,
+  storeLinkToRequest,
   getRequestsByUID,
 };

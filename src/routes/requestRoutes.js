@@ -6,5 +6,6 @@ const upload = require('../config/multer');
 
 router.post('/uploadImage',upload.single('file'), requestController.uploadImageToBucket);
 router.get('/getRequestsByUID/:uid', requestController.getRequestsByUID);
+router.post('/storeLink', requestController.storeLinkToRequest);
 
 module.exports = router;

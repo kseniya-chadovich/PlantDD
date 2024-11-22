@@ -89,6 +89,7 @@ document.getElementById("upload-btn").addEventListener("click", function () {
 
 
 let file;
+let link;
 let fileName = ""; // Variable to hold the file name
 let selectedFile = ""; // Variable to hold the base64-encoded file data
 
@@ -136,6 +137,7 @@ const sendImageData = async (file) => {
 
     if (result.msg === "SUCCESS") {
       console.log("File uploaded successfully:", result.pictureURL);
+      link = result.pictureURL;
       alert("Upload successful!");
       setFileName(""); // Reset the file name
       setSelectedFile(""); // Reset the selected file data
@@ -147,18 +149,41 @@ const sendImageData = async (file) => {
   }
 };
 
+
+const storeLink = async (id, link) => {
+  try {
+    const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/storeLink", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uid: id,
+        link: link,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.msg === "Link stored successfully") {
+      console.log(result.msg);
+    } else {
+      console.error("Storing failed:", result.error);
+    }
+  } catch (error) {
+    console.error("Error storing the link:", error);
+  }
+};
+
+
+
 // Event listener for the "save" button
 document.getElementById("save").addEventListener("click", async () => {
-  await sendImageData(file); // Call the function to send the image data
+  await sendImageData(file);
+  const id = await getCurrentUserUID();
+  await storeLink(id, link);
+  document.getElementById("upload-btn").innerHTML = ""; // Call the function to send the image data
 });
-
-// Event listener for file input
-document.getElementById("fileInput").addEventListener("change", (e) => {
-  uploadFile(e); // Call the function to handle file selection
-});
-
-
-
 
 
 
