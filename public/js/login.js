@@ -39,18 +39,26 @@ async function handleLogin(event) {
   } catch (error) {
     console.error("Login error:", error.message);
 
-    // Handle specific error codes (optional)
-    switch (error.code) {
-      case "auth/user-not-found":
-        alert("No user found with this email.");
-        break;
-      case "auth/wrong-password":
-        alert("Incorrect password. Please try again.");
-        break;
-      default:
-        alert("An error occurred during login. Please try again.");
-        document.getElementById("forgot-password-link").style.display = "block";
-        break;
-    }
+    document.getElementById("forgot-password-link").style.display = "block";
+    
   }
 }
+
+async function handleForgotPassword() {
+  const email = document.getElementById("email").value; // Get the email input value
+
+
+  try {
+    console.log("Got to the handleForgotPassword");
+    // Firebase function to send a password reset email
+    await auth.sendPasswordResetEmail(email, {
+      url: "https://wheatplant-ea05f.web.app/html/passwordReset.html", // Your custom reset page
+      handleCodeInApp: true, // Ensures Firebase sends the action code
+    });
+    alert("Please check your email for the reset link.");
+  } catch (error) {
+    console.error("Error sending password reset email:", error.message);
+    alert("Failed to send password reset email. Please try again.");
+  }
+}
+

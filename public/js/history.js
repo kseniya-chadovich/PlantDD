@@ -31,6 +31,7 @@ function toggleSidebar() {
 // Function to fetch the user's history
 async function fetchUserHistory() { 
   try {
+    const uid = await getCurrentUserUID();
     const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/requests/getLinks/${uid}`); 
     const historyData = await response.json();
 
@@ -77,5 +78,17 @@ async function fetchUserHistory() {
 window.onload = function () {
   fetchUserHistory();
 };
+
+function getCurrentUserUID() {
+  return new Promise((resolve, reject) => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+}
 
 

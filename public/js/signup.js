@@ -188,20 +188,6 @@ async function handleSignup(event) {
   }
 }
 
-// Password reset function
-async function handlePasswordReset(event) {
-  event.preventDefault();
-
-  const email = document.getElementById("email").value;
-
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert(`Password reset email sent to ${email}.`);
-  } catch (error) {
-    console.error("Error during password reset:", error.message);
-    alert(`Error: ${error.message}`);
-  }
-}
 
 // Attach event listeners
 // document.getElementById("signup-form").addEventListener("submit", handleSignup);
