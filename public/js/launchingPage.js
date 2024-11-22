@@ -8,11 +8,18 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 let statusOfLog = "notuser";
 
+let file;
+let link;
+let fileName = ""; 
+let selectedFile = ""; 
+let uidLocal;
+
 function displayUserInfoForEdit() {
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       statusOfLog = "user";
       console.log("User is signed in.");
+      uidLocal = user.uid;
       console.log("UID: ", user.uid)
 
 
@@ -88,11 +95,6 @@ document.getElementById("upload-btn").addEventListener("click", function () {
 });
 
 
-let file;
-let link;
-let fileName = ""; // Variable to hold the file name
-let selectedFile = ""; // Variable to hold the base64-encoded file data
-
 // Function to set the file name
 const setFileName = (name) => {
   fileName = name;
@@ -151,6 +153,7 @@ const sendImageData = async (file) => {
 
 
 const storeLink = async (id, link) => {
+  const description = "Result of AI evaluation";
   try {
     const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/storeLink", {
       method: "POST",
@@ -160,15 +163,16 @@ const storeLink = async (id, link) => {
       body: JSON.stringify({
         uid: id,
         link: link,
+        description: description,
       }),
     });
 
     const result = await response.json();
 
-    if (result.msg === "Link stored successfully") {
-      console.log(result.msg);
+    if (response.ok) {
+      alert("Link stored successfully! You can find it now in the "); // Alert for success
     } else {
-      console.error("Storing failed:", result.error);
+      alert(`Failed to store the link: ${result.message}`); // Alert for failure
     }
   } catch (error) {
     console.error("Error storing the link:", error);
@@ -180,8 +184,7 @@ const storeLink = async (id, link) => {
 // Event listener for the "save" button
 document.getElementById("save").addEventListener("click", async () => {
   await sendImageData(file);
-  const id = await getCurrentUserUID();
-  await storeLink(id, link);
+  await storeLink(uidLocal, link);
   document.getElementById("upload-btn").innerHTML = ""; // Call the function to send the image data
 });
 

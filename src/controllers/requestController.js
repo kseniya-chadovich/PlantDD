@@ -59,11 +59,11 @@ const uploadImageToBucket = async (req, res) => {
 
 const storeLinkToRequest = async (req, res) => {
   try {
-    const { uid, link } = req.body; // Extract UID and link from the request body
+    const { uid, link, description } = req.body; // Extract UID and link from the request body
 
     // Validate input
-    if (!uid || !link) {
-      return res.status(400).json({ message: "UID and link are required." });
+    if (!uid || !link || !description) {
+      return res.status(400).json({ message: "UID, link, and desc are required." });
     }
 
     // Reference the document for the user
@@ -74,15 +74,15 @@ const storeLinkToRequest = async (req, res) => {
 
     if (doc.exists) {
       // If the document exists, append the link to the existing array
-      const existingLinks = doc.data().links || [];
+      const existingPairs = doc.data().pairs || [];
       await docRef.set(
-        { links: [...existingLinks, link] }, // Add the new link to the array
+        { pairs: [...existingPairs, { link, description }] }, // Add the new pair to the array
         { merge: true } // Ensure we do not overwrite other fields
       );
+      
     } else {
-      // If the document does not exist, create it with the link in a new array
       await docRef.set({
-        links: [link],
+        pairs: [{ link, description }],
       });
     }
 
