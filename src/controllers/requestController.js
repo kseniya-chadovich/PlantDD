@@ -1,5 +1,4 @@
 const { db, auth, bucket } = require("../config/firebase");
-const 
 
 const uploadImageToBucket = async (req, res) => {
   try {
