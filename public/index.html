@@ -1,86 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Plant Disease Detector</title>
 
-  <style>
-    body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: rgba(216, 209, 209, 0.607);
-    overflow: hidden; 
-    }
+    <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              background-color: rgba(232, 224, 224, 0);
+              overflow: hidden;
+              flex-direction: column;
+            }
 
+            h1 {
+              text-align: center;
+              font-size: 3rem;
+              margin-top: 20px;
+              color: white;
+            }
 
-    #signup, #login, #notuser {
-    z-index: 1;
-    position: relative;
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+            .main-container {
+              display: flex;
+              width: 80%;
+              height: 80%;
+              max-width: 1200px;
+              justify-content: space-between;
+              align-items: center;
+              background-color: rgba(255, 255, 255, 0.788);
+              border-radius: 15px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              padding: 30px;
+              position: relative; 
+              z-index: 1; 
+            }
 
-    .background-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Adjust the opacity as needed */
-    z-index: 0; /* Below the login form but above the video */
-    }
+            .description {
+              width: 45%;
+              padding-right: 20px;
+              text-align: left;
+              font-size: 1.2rem;
+              line-height: 1.6;
+            }
 
-    .background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1; /* Ensure video stays behind other content */
-    }
-</style>
+            .description h2 {
+              font-size: 2rem;
+              margin-bottom: 10px;
+              color: #5a6268;
+            }
 
-</head>
-<body>
-  
-  <div class="background-container">
+            .description p {
+              margin-bottom: 20px;
+            }
+
+            .buttons {
+              width: 45%;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              align-items: center;
+              cursor: pointer;
+              z-index: 2; 
+      }
+
+            .login-button {
+              width: 100%;
+              padding: 12px;
+              margin: 10px 0;
+              font-size: 1.2rem;
+              border: none;
+              border-radius: 10px;
+              cursor: pointer;
+              background-color: #5cb85c;
+              color: white;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+              transition: background-color 0.3s;
+            }
+
+            .login-button:hover {
+              background-color: #4cae4c;
+            }
+
+            .button-description {
+              font-size: 0.9rem;
+              color: #555;
+              text-align: center;
+              margin-top: 5px;
+            }
+
+            .background-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: 0; 
+      }
+
+            .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to Plant Disease Detector!</h1>
+
+    <!-- Main container for sections -->
+    <div class="main-container">
+      <!-- Left section for Description -->
+      <div class="description">
+        <h2>What is this App?</h2>
+        <p>
+          The Plant Disease Detector app helps farmers and plant enthusiasts
+          identify and diagnose diseases in their plants with just a few clicks.
+          Simply upload a picture of the plant, and the app uses AI to detect
+          the potential diseases.
+        </p>
+        <p>
+          This tool can help you keep your plants healthy by catching issues
+          early.
+        </p>
+      </div>
+
+      <!-- Right section for Buttons -->
+      <div class="buttons">
+        <div class="button-description">
+          Don't have an account yet? Sign up now!
+        </div>
+        <button id="signup" type="submit" class="login-button">Sign up</button>
+        <br />
+
+        <div class="button-description">
+          Already have an account? Log in here!
+        </div>
+        <button id="login" type="submit" class="login-button">Login</button>
+        <br />
+
+        <div class="button-description">
+          Explore the app without creating an account.
+        </div>
+        <button id="notuser" type="submit" class="login-button">
+          Use without registering
+        </button>
+      </div>
+    </div>
+
     <!-- Video background -->
     <video autoplay muted loop class="background-video">
       <source src="/videos/background.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
+
     <div class="background-overlay"></div>
 
-    <button id = "signup" type="submit" class="login-button">Sign up</button><br>
-    <button id = "login" type="submit" class="login-button">Login</button><br>
-    <button id = "notuser" type="submit" class="login-button">Use without registering</button><br>
-  
+    <!-- Firebase Config -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="/js/firebase-config.js"></script>
 
-  <!-- Firebase Config -->
-  <script src="/js/firebase-config.js"></script>
+    <script type="module">
+      document.getElementById("signup").addEventListener("click", () => {
+        (window.location.href = "/html/signup.html"),
+          "_blank",
+          "width=800,height=600";
+      });
 
-<script type="module">
+      document.getElementById("login").addEventListener("click", () => {
+        (window.location.href = "/html/login.html"),
+          "_blank",
+          "width=800,height=600";
+      });
 
-  document.getElementById("signup").addEventListener("click", () => {
-      window.location.href = "/html/signup.html", "_blank", "width=800,height=600";
-    });
-
-    document.getElementById("login").addEventListener("click", () => {
-      window.location.href = "/html/login.html", "_blank", "width=800,height=600";
-    });
-
-    document.getElementById("notuser").addEventListener("click", () => {
-      window.location.href = "/html/launchingPage.html", "_blank", "width=800,height=600";
-    });
-</script>
-
-</body>
+      document.getElementById("notuser").addEventListener("click", () => {
+        (window.location.href = "/html/launchingPage.html"),
+          "_blank",
+          "width=800,height=600";
+      });
+    </script>
+  </body>
 </html>

@@ -223,3 +223,41 @@ function getCurrentUserUID() {
     });
   });
 }
+
+
+// This function checks the authentication state and updates the sidebar
+function updateSidebarForAuthentication() {
+  auth.onAuthStateChanged(async (user) => {
+    const historyLink = document.getElementById("history");
+    const profileLink = document.getElementById("profile");
+    const logoutLink = document.getElementById("logout");
+    const registerBtn = document.getElementById("register-btn");
+    const loginBtn = document.getElementById("login-btn");
+    const divider = document.querySelector(".divider");
+
+    if (user) {
+      // If the user is logged in, show the profile, history, and logout options
+      historyLink.style.display = "block";
+      profileLink.style.display = "block";
+      logoutLink.style.display = "block";
+
+      registerBtn.style.display = "none";
+      loginBtn.style.display = "none";
+      divider.style.display = "none";
+    } else {
+      // If no user is logged in, show the register and login options
+      historyLink.style.display = "none";
+      profileLink.style.display = "none";
+      logoutLink.style.display = "none";
+
+      registerBtn.style.display = "block";
+      loginBtn.style.display = "block";
+      divider.style.display = "block";
+    }
+  });
+}
+
+// Call this function when the page loads
+window.onload = function () {
+  updateSidebarForAuthentication();
+};

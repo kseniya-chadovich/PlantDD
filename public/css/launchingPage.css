@@ -82,6 +82,31 @@ body {
   z-index: 100;
 }
 
+.auth-btn {
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #216a36;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-btn:hover {
+    background-color: #164614;
+}
+
+.divider {
+    font-size: 30px;
+    color: #ebe7e7;
+    padding: 10 10px;
+}
+
+
 .main-body {
   flex-grow: 1;
   margin-left: 50px;

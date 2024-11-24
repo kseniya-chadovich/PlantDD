@@ -187,3 +187,17 @@ function getCurrentUserUID() {
     });
   });
 }
+
+document
+  .getElementById("image-upload")
+  .addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const profileImage = document.getElementById("profile-image");
+        profileImage.src = e.target.result; // Set the uploaded image as the new profile picture
+      };
+      reader.readAsDataURL(file); // Read the file as a Data URL
+    }
+  });

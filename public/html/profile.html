@@ -41,11 +41,37 @@
                 <span id="firstName-display"></span>
                 <input type="text" id="firstName" class="input-field" />
               </div>
+
               <div class="info">
                 <label for="lastName">Last Name: </label>
                 <span id="lastName-display"></span>
                 <input type="text" id="lastName" class="input-field" />
               </div>
+            </div>
+
+            <!-- Profile image container -->
+            <div class="profile-container">
+              <div class="profile-pic" id="profile-pic">
+                <img
+                  id="profile-image"
+                  src="https://i0.wp.com/static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg?ssl=1"
+                />
+                <button
+                  class="upload-icon"
+                  onclick="document.getElementById('image-upload').click();"
+                >
+                  <img
+                    src="https://static.vecteezy.com/system/resources/previews/015/337/675/non_2x/transparent-upload-icon-free-png.png"
+                    alt="Upload Icon"
+                  />
+                </button>
+              </div>
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+                style="display: none"
+              />
             </div>
 
             <div class="profile-actions">
@@ -60,7 +86,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-  <script src="/js/firebase-config.js"></script>
+    <script src="/js/firebase-config.js"></script>
 
     <script src="/js/profile.js"></script>
   </body>

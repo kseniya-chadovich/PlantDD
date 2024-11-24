@@ -9,7 +9,7 @@ const requestRoutes = require("./routes/requestRoutes");
 const app = express();
 
 const corsOptions = {
-  origin: "https://wheatplant-ea05f.web.app", // Add your frontend origin here
+  origin: ["https://plantdd-78c88.web.app", "https://wheatplant-ea05f.web.app"], // Add your frontend origin here
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
 };
