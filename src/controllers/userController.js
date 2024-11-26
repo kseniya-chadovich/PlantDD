@@ -1,4 +1,5 @@
 const { db, auth, bucket } = require("../config/firebase"); // Import firestore and auth
+const stream = require('stream');
 
 const registerUser = async (req, res) => {
   try {
@@ -71,27 +72,65 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
-
-const deleteUser = async (req, res) => {
+const uploadProfileToBucket = async (req, res) => {
   try {
-    const uid = req.params.uid; // Get user ID from the route parameter
+    const file = req.file; // Access the uploaded file via Multer
 
-    // Delete the user's Firestore document
-    await db.collection("users").doc(uid).delete();
+    if (!file) {
+      return res.status(400).json({ msg: "No file uploaded" });
+    }
 
-    // Optionally, delete the user from Firebase Auth
-    await auth.deleteUser(uid);
+    const fileName = file.originalname; // Get the original file name
+    const mimeType = file.mimetype; // MIME type of the uploaded file
+    const imageBuffer = file.buffer; // File content as a buffer
 
-    return res.status(200).json({ message: "User deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting user: ", error);
-    return res.status(500).json({ message: "Failed to delete user" });
+    // Create a stream for the file
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(imageBuffer);
+
+    // Define the file reference in Firebase Storage
+    const firebaseFile = bucket.file(`profiles/${fileName}`);
+
+    // Upload the file to Firebase Storage
+    bufferStream.pipe(
+      firebaseFile.createWriteStream({
+        metadata: {
+          contentType: mimeType,
+        },
+        public: true, // Make the file public
+        validation: 'md5', // Validate the upload (optional)
+      })
+    )
+      .on('error', function (err) {
+        console.log('Error uploading image:', err);
+        return res.status(500).json({ error: err.message });
+      })
+      .on('finish', async function () {
+        // Once the upload is finished, generate a signed URL
+        try {
+          const signedUrls = await firebaseFile.getSignedUrl({
+            action: 'read', // Allow reading the file
+            expires: '03-09-2491', // Long expiration date for the URL
+          });
+
+          const pictureURL = signedUrls[0]; // The public URL of the uploaded image
+          return res.status(200).json({ msg: 'SUCCESS', pictureURL });
+        } catch (err) {
+          console.log('Error getting signed URL:', err);
+          return res.status(500).json({ error: err.message });
+        }
+      });
+  } catch (err) {
+    console.log('Error in uploadImageToBucket function:', err);
+    return res.status(500).json({ error: err.message });
   }
 };
+
+
 
 module.exports = {
   registerUser,
   getUserInfo,
   updateUserInfo,
-  deleteUser,
+  uploadProfileToBucket,
 };

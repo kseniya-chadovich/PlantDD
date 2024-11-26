@@ -4,6 +4,11 @@ if (!firebase.apps.length) {
 } else {
   firebase.app(); // Use the default app if already initialized
 }
+
+let file;
+let link;
+let fileName = ""; 
+let selectedFile = ""; 
 const auth = firebase.auth();
 
 const editBtn = document.getElementById("edit-btn");
@@ -18,6 +23,7 @@ const lastNameInput = document.getElementById("lastName");
 const userNameInput = document.getElementById("userName");
 
 async function displayUserInfo() {
+  disableImageUpload();
   try {
     const uid = await getCurrentUserUID();
 
@@ -51,9 +57,68 @@ async function displayUserInfo() {
 window.onload = function () {
   displayUserInfo();
 };
-// Function to switch to edit mode
+
+const setFileName = (name) => {
+  fileName = name;
+};
+
+// Function to set the selected file
+const setSelectedFile = (file) => {
+  selectedFile = file;
+};
+
+// Function to handle the file selection and encoding process
+const uploadFile = (e) => {
+  file = e.target.files[0];
+
+  if (!file) {
+    alert("Please select a file.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file); // Read the file as a Base64 data URL
+  reader.onloadend = () => {
+    setFileName(file.name); // Save the file name
+    setSelectedFile(reader.result); // Save the Base64-encoded file data
+  };
+  console.log("Finished setting the name and the file!");
+};
+
+const sendImageData = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+  formData.append('fileName', file.name);
+
+    const response = await fetch("https://wheatdiseasedetector.onrender.com/api/users/uploadProfilePicture", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.msg === "SUCCESS") {
+      console.log("File uploaded successfully:", result.pictureURL);
+      link = result.pictureURL;
+      alert("Upload successful!");
+      setFileName(""); // Reset the file name
+      setSelectedFile(""); // Reset the selected file data
+    } else {
+      console.error("Upload failed:", result.error);
+    }
+  } catch (error) {
+    console.error("Error uploading file:", error);
+  }
+};
+
+
+
 function enableEditMode() {
   
+  enableImageUpload();
+
   firstNameDisplay.style.display = "none";
   lastNameDisplay.style.display = "none";
   userNameDisplay.style.display = "none";
@@ -82,6 +147,7 @@ async function saveChanges() {
       return;
     }
 
+    await sendImageData(file);
 
     // Prepare the updated user data
     const firstName = firstNameInput.value;
@@ -129,6 +195,7 @@ async function saveChanges() {
   } catch (error) {
     console.error("Error saving changes:", error);
   }
+  disableImageUpload();
 }
 
 
@@ -151,7 +218,13 @@ function toggleSidebar() {
 }
 
 function logout() {
-  window.location.href = "/html/login.html";
+  firebase.auth().signOut().then(() => {
+    // Redirect to the homepage after logging out
+    window.location.href = "../index.html";
+  }).catch((error) => {
+    // Handle any errors that occur during sign-out
+    console.error("Error during sign-out:", error);
+  });
 }
 
 async function getUserInfo(uid){
@@ -187,3 +260,36 @@ function getCurrentUserUID() {
     });
   });
 }
+
+let imageUploadListener;
+function enableImageUpload() {
+  document.getElementById("upload-icon").style.display = "block";
+
+  imageUploadListener = function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const profileImage = document.getElementById("profile-image");
+        profileImage.src = e.target.result; // Set the uploaded image as the new profile picture
+      };
+      reader.readAsDataURL(file); 
+      uploadFile(event);// Read the file as a Data URL
+    }
+  };
+
+  // Enable the event listener for the file input
+  document
+    .getElementById("image-upload")
+    .addEventListener("change", imageUploadListener);
+}
+
+function disableImageUpload() {
+  document.getElementById("upload-icon").style.display = "none";
+  // Disable the event listener for the file input
+  document
+    .getElementById("image-upload")
+    .removeEventListener("change", imageUploadListener);
+
+}
+

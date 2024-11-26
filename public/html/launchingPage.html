@@ -18,6 +18,13 @@
           <li><a href="/html/history.html" id="history">View History</a></li>
           <li><a href="/html/profile.html" id = "profile">View Profile</a></li>
           <li id = "logout"><a href="#" onclick="logout()">Logout</a></li>
+
+          <div id="notuserButtons">
+            <div id="login-container"><a href="/html/login.html" id="login">Log In</a></div>
+            <div id="or-container"><span id="or">or</span></div>
+            <div id="signup-container"><a href="/html/signup.html" id="signup">Sign Up</a></div>
+          </div>
+
         </ul>
       </div>
 
@@ -37,7 +44,7 @@
               </div>
               <div class="action-container">
                 <div class="button-container">
-                  <button id="detect" class="detect">Detect</button>
+                  <button id="detect" class="detect">Evaluate</button>
                   <button id= "save" class="save">Save</button>
                 </div>
                 <div class="image-preview-container" id="image-preview-container" style="display: none;">
@@ -46,7 +53,7 @@
               </div>
               <input type="file" id="fileInput" name="file" accept="image/*" required style="display: none" />
               <div class="info" id="file-info">
-                Disease: <span id="answer">Answer</span>
+                Disease detected: <span id="answer"></span>
               </div>
             </div>
           </div>

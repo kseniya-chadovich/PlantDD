@@ -62,12 +62,46 @@ body {
 
 
 .sidebar ul li#logout {
+  border-radius: 4px;
   background-color: rgba(198, 198, 209, 0.584);
-  border-radius: 10%;
   margin-top: auto; 
   text-align: center;
 }
 
+#notuserButtons {
+  margin-top: 50%; 
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center; /* Center buttons horizontally */
+  width: 100%; /* Make container take the full width */
+}
+
+#notuserButtons a {
+  display: block;
+  width: 80%; /* Adjust the width to match the original "Log Out" button */
+  text-align: center;
+  padding: 7px;
+  margin: 5px 0;
+  background-color: rgba(198, 198, 209, 0.584);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+#or-container {
+  text-align: center;
+  margin: 5px 0;
+}
+
+#or {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  color: white;
+}
+
+#login-container, #signup-container {
+  width: 100%; /* Ensure both buttons take the same width */
+}
 
 
 .sidebar-toggle {

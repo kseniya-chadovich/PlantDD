@@ -21,6 +21,7 @@ function displayUserInfoForEdit() {
       console.log("User is signed in.");
       uidLocal = user.uid;
       console.log("UID: ", user.uid)
+      document.getElementById("notuserButtons").style.display = "none";
 
 
       try {
@@ -33,6 +34,16 @@ function displayUserInfoForEdit() {
         console.error("Error fetching user data:", error);
       }
     } else {
+      document.getElementById("save").style.display = "none";
+      document.getElementById("logout").style.display = "none";
+      document.getElementById("profile").style.display = "none";
+      document.getElementById("history").style.display = "none";
+      document.getElementById("notuserButtons").style.display = "flex";
+      document.getElementById("notuserButtons").style.justifyContent = "center";
+
+      document.getElementById("detect").style.display = 'flex';
+      document.getElementById("detect").style.justifyContent = 'center'; 
+      document.getElementById("welcome-text").textContent = `Welcome, user!`;
       console.log("No user is signed in.");
     }
   });
@@ -43,8 +54,14 @@ window.onload = function () {
 };
 
 function logout() {
-  localStorage.clear();
-  window.location.href = "/html/login.html";
+  firebase.auth().signOut().then(() => {
+    // Redirect to the homepage after logging out
+    window.location.href = "../index.html";
+  }).catch((error) => {
+    // Handle any errors that occur during sign-out
+    console.error("Error during sign-out:", error);
+  });
+  
 }
 
 function toggleSidebar() {
@@ -120,6 +137,7 @@ const uploadFile = (e) => {
     setFileName(file.name); // Save the file name
     setSelectedFile(reader.result); // Save the Base64-encoded file data
   };
+  console.log("Finished setting the name and the file!");
 };
 
 // Function to send the Base64 file data and file name to the backend
@@ -152,8 +170,64 @@ const sendImageData = async (file) => {
 };
 
 
+const detectResult = async (file) => {
+  if (!file) {
+    alert("Please upload an image before clicking detect.");
+    return;
+  }
+  
+  try {
+    const formData = new FormData();
+    formData.append("file", file); // Add the file selected by the user
+    
+    // Call the prediction API
+    const response = await fetch("https://plantmodel.onrender.com/predict", {
+        method: "POST",
+        body: formData,
+    });
+  
+    const data = await response.json();
+  
+    // Handle the response
+    if (response.ok) {
+      if (data.predicted_disease == "Healthy"){
+        document.getElementById("answer").textContent = "None";
+        document.getElementById("answer").style.color = "green";
+      }
+      else{
+        document.getElementById("answer").textContent = data.predicted_disease;
+      }
+    } else {
+        console.error("Detection failed:", data.error || "Unknown error");
+        document.getElementById("answer").textContent = `Error: ${data.error}`;
+    }
+  } catch (error) {
+    console.error("Error during detection:", error);
+    document.getElementById("answer").textContent = `Error: ${error.message}`;
+  }
+};
+
+
+
+// Event listener for the "save" button
+document.getElementById("save").addEventListener("click", async () => {
+  await sendImageData(file);
+  await storeLink(uidLocal, link);
+  document.getElementById("upload-btn").innerHTML = ""; // Call the function to send the image data
+});
+
+document.getElementById("detect").addEventListener("click", async () => {
+  await detectResult(file);
+  console.log("Detection done.");
+});
+
+
 const storeLink = async (id, link) => {
-  const description = "Result of AI evaluation";
+  const descriptionLocal = document.getElementById("answer").textContent;
+  if (descriptionLocal === ""){
+    console.log("no desc");
+    return;
+  }
   try {
     const response = await fetch("https://wheatdiseasedetector.onrender.com/api/requests/storeLink", {
       method: "POST",
@@ -163,7 +237,7 @@ const storeLink = async (id, link) => {
       body: JSON.stringify({
         uid: id,
         link: link,
-        description: description,
+        description: descriptionLocal,
       }),
     });
 
@@ -178,16 +252,6 @@ const storeLink = async (id, link) => {
     console.error("Error storing the link:", error);
   }
 };
-
-
-
-// Event listener for the "save" button
-document.getElementById("save").addEventListener("click", async () => {
-  await sendImageData(file);
-  await storeLink(uidLocal, link);
-  document.getElementById("upload-btn").innerHTML = ""; // Call the function to send the image data
-});
-
 
 
 

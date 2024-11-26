@@ -28,6 +28,32 @@
 
         <main>
           <div class="profile-container">
+            <div class="profile-pic" id="profile-pic">
+              <img
+                id="profile-image"
+                src="https://i0.wp.com/static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg?ssl=1"
+              />
+              <button
+              id="upload-icon"
+                class="upload-icon"
+                onclick="document.getElementById('image-upload').click();"
+              >
+                <img
+                  src="https://static.vecteezy.com/system/resources/previews/015/337/675/non_2x/transparent-upload-icon-free-png.png"
+                  alt="Upload Icon"
+                />
+              </button>
+            </div>
+            <input
+              type="file"
+              id="image-upload"
+              accept="image/*"
+              style="display: none"
+            />
+          </div>
+
+
+          <div class="profile-container">
             <div class="profile-info">
               <h2>Profile Information</h2>
               <br />

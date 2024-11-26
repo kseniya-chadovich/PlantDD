@@ -11,7 +11,13 @@ function goHome() {
 }
 
 function logout() {
-  window.location.href = "/html/login.html";
+  firebase.auth().signOut().then(() => {
+    // Redirect to the homepage after logging out
+    window.location.href = "../index.html";
+  }).catch((error) => {
+    // Handle any errors that occur during sign-out
+    console.error("Error during sign-out:", error);
+  });
 }
 
 function toggleSidebar() {
