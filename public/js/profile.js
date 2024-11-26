@@ -46,6 +46,11 @@ async function displayUserInfo() {
       firstNameDisplay.innerText = data.firstName;
       lastNameDisplay.innerText = data.lastName;
       userNameDisplay.innerText = data.userName;
+
+      const profileImage = document.getElementById('profile-image');
+      if (data.profileImageUrl) {
+        profileImage.src = data.profileImageUrl; // Use the stored URL
+      }
     } else {
       console.log("No user is signed in.");
     }

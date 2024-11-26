@@ -56,6 +56,7 @@ async function handleForgotPassword() {
       handleCodeInApp: true, // Ensures Firebase sends the action code
     });
     alert("Please check your email for the reset link.");
+    window.location.href = "../html/varifyEmail.html";
   } catch (error) {
     console.error("Error sending password reset email:", error.message);
     alert("Failed to send password reset email. Please try again.");
