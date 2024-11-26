@@ -6,7 +6,7 @@ if (!firebase.apps.length) {
 }
 
 let file;
-let link;
+let profileImageUrl;
 let fileName = ""; 
 let selectedFile = ""; 
 const auth = firebase.auth();
@@ -101,7 +101,7 @@ const sendImageData = async (file) => {
 
     if (result.msg === "SUCCESS") {
       console.log("File uploaded successfully:", result.pictureURL);
-      link = result.pictureURL;
+      profileImageUrl = result.pictureURL;
       alert("Upload successful!");
       setFileName(""); // Reset the file name
       setSelectedFile(""); // Reset the selected file data
@@ -164,7 +164,7 @@ async function saveChanges() {
         userName,
         firstName,
         lastName,
-        link,
+        profileImageUrl,
       }),
     });
 
