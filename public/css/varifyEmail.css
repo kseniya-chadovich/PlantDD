@@ -3,7 +3,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: rgba(216, 209, 209, 0.607);
+  background-color: rgba(216, 209, 209, 0.758);
 }
 
 .background-overlay {
@@ -16,13 +16,18 @@ background-color: rgba(0, 0, 0, 0.6); /* Adjust the opacity as needed */
 z-index: 0;
 }
 
-h2 {
+.container{
+  position: relative;
+  z-index: 1;
+}
+
+.message h2 {
   color: white;
   text-align: center;
   margin-top: 1.5rem;
 }
 
-p {
+.message p {
   color: white;
   text-align: center;
 }
