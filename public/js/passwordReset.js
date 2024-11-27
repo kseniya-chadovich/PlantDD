@@ -1,7 +1,7 @@
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   } else {
-    firebase.app(); // Use the default app if already initialized
+    firebase.app();
   }
   const auth = firebase.auth();
 
@@ -13,12 +13,12 @@ const togglePassword2 = document.getElementById("togglePassword2");
 const passwordFeedback = document.getElementById("passwordFeedback");
   
   const urlParams = new URLSearchParams(window.location.search);
-  const oobCode = urlParams.get("oobCode"); // Firebase action code
-  const mode = urlParams.get("mode"); // Should be "resetPassword"
+  const oobCode = urlParams.get("oobCode");
+  const mode = urlParams.get("mode"); 
   const apiKey = urlParams.get("apiKey");
   
   function handlePasswordReset(event) {
-    event.preventDefault(); // Prevent form submission and page reload
+    event.preventDefault(); 
 
     const newPassword = document.getElementById("password").value;
     const confirmPassword = document.getElementById("passwordConfirmation").value;
@@ -37,7 +37,7 @@ const passwordFeedback = document.getElementById("passwordFeedback");
       auth.confirmPasswordReset(oobCode, newPassword)
         .then(() => {
           alert("Password reset successfully! You can now log in.");
-          window.location.href = "/html/login.html"; // Redirect to login page
+          window.location.href = "/html/login.html"; 
         })
         .catch((error) => {
           console.error("Error resetting password:", error.message);
@@ -64,13 +64,13 @@ const passwordFeedback = document.getElementById("passwordFeedback");
   togglePassword1.addEventListener("click", () => {
     const currentType = passwordInput.type;
     if (currentType === "password") {
-      passwordInput.type = "text"; // Show password
+      passwordInput.type = "text";
       togglePassword1.classList.remove("fa-eye");
-      togglePassword1.classList.add("fa-eye-slash"); // Change to "eye-slash"
+      togglePassword1.classList.add("fa-eye-slash"); 
     } else {
-      passwordInput.type = "password"; // Hide password
+      passwordInput.type = "password"; 
       togglePassword1.classList.remove("fa-eye-slash");
-      togglePassword1.classList.add("fa-eye"); // Change to "eye"
+      togglePassword1.classList.add("fa-eye"); 
     }
   
   });
@@ -78,13 +78,13 @@ const passwordFeedback = document.getElementById("passwordFeedback");
   togglePassword2.addEventListener("click", () => {
     const currentType = passwordInputConf.type;
     if (currentType === "password") {
-      passwordInputConf.type = "text"; // Show password
+      passwordInputConf.type = "text"; 
       togglePassword2.classList.remove("fa-eye");
-      togglePassword2.classList.add("fa-eye-slash"); // Change to "eye-slash"
+      togglePassword2.classList.add("fa-eye-slash"); 
     } else {
-      passwordInputConf.type = "password"; // Hide password
+      passwordInputConf.type = "password"; 
       togglePassword2.classList.remove("fa-eye-slash");
-      togglePassword2.classList.add("fa-eye"); // Change to "eye"
+      togglePassword2.classList.add("fa-eye"); 
     }
   });
 

@@ -1,11 +1,10 @@
-const { db, auth, bucket } = require("../config/firebase"); // Import firestore and auth
+const { db, auth, bucket } = require("../config/firebase");
 const stream = require('stream');
 
 const registerUser = async (req, res) => {
   try {
-    const { uid, userName, firstName, lastName, email } = req.body; // Get user data from the request body
+    const { uid, userName, firstName, lastName, email } = req.body; 
 
-    // Store additional user information in Firestore under the UID
     await db.collection("users").doc(uid).set({
       userName,
       firstName,
@@ -13,7 +12,6 @@ const registerUser = async (req, res) => {
       email,
     });
 
-    // Return a success response
     return res.status(201).json({
       message: "User registered successfully",
     });
@@ -26,7 +24,7 @@ const registerUser = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
   try {
-    const uid = req.params.uid; // Get user ID from the route parameter
+    const uid = req.params.uid; 
     const userDoc = await db.collection("users").doc(uid).get();
 
     if (!userDoc.exists) {
@@ -43,34 +41,29 @@ const getUserInfo = async (req, res) => {
 const updateUserInfo = async (req, res) => {
   try {
     const uid = req.params.uid; 
-    const { firstName, lastName, userName, profileImageUrl } = req.body; // profileImageUrl is optional
+    const { firstName, lastName, userName, profileImageUrl } = req.body; 
 
-    // Check if all required fields are provided
     if (!firstName || !lastName || !userName) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
     const userDocRef = db.collection("users").doc(uid);
 
-    // Check if the document exists
     const userDoc = await userDocRef.get();
     if (!userDoc.exists) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Prepare the update object with required fields
     const updateData = {
       firstName,
       lastName,
       userName,
     };
 
-    // Only add profileImageUrl to the update data if it is provided
     if (profileImageUrl) {
       updateData.profileImageUrl = profileImageUrl;
     }
 
-    // Update the user document with the prepared data
     await userDocRef.update(updateData);
 
     return res.status(200).json({ message: "User info updated successfully" });
@@ -83,31 +76,28 @@ const updateUserInfo = async (req, res) => {
 
 const uploadProfileToBucket = async (req, res) => {
   try {
-    const file = req.file; // Access the uploaded file via Multer
+    const file = req.file; 
 
     if (!file) {
       return res.status(400).json({ msg: "No file uploaded" });
     }
 
-    const fileName = file.originalname; // Get the original file name
-    const mimeType = file.mimetype; // MIME type of the uploaded file
-    const imageBuffer = file.buffer; // File content as a buffer
+    const fileName = file.originalname; 
+    const mimeType = file.mimetype; 
+    const imageBuffer = file.buffer; 
 
-    // Create a stream for the file
     const bufferStream = new stream.PassThrough();
     bufferStream.end(imageBuffer);
 
-    // Define the file reference in Firebase Storage
     const firebaseFile = bucket.file(`profiles/${fileName}`);
 
-    // Upload the file to Firebase Storage
     bufferStream.pipe(
       firebaseFile.createWriteStream({
         metadata: {
           contentType: mimeType,
         },
-        public: true, // Make the file public
-        validation: 'md5', // Validate the upload (optional)
+        public: true,
+        validation: 'md5', 
       })
     )
       .on('error', function (err) {
@@ -115,14 +105,14 @@ const uploadProfileToBucket = async (req, res) => {
         return res.status(500).json({ error: err.message });
       })
       .on('finish', async function () {
-        // Once the upload is finished, generate a signed URL
+        
         try {
           const signedUrls = await firebaseFile.getSignedUrl({
-            action: 'read', // Allow reading the file
-            expires: '03-09-2491', // Long expiration date for the URL
+            action: 'read', 
+            expires: '03-09-2491', 
           });
 
-          const pictureURL = signedUrls[0]; // The public URL of the uploaded image
+          const pictureURL = signedUrls[0];
           return res.status(200).json({ msg: 'SUCCESS', pictureURL });
         } catch (err) {
           console.log('Error getting signed URL:', err);

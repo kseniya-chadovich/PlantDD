@@ -71,14 +71,14 @@ body {
 #notuserButtons {
   margin-top: 50%; 
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  align-items: center; /* Center buttons horizontally */
-  width: 100%; /* Make container take the full width */
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%; 
 }
 
 #notuserButtons a {
   display: block;
-  width: 80%; /* Adjust the width to match the original "Log Out" button */
+  width: 80%; 
   text-align: center;
   padding: 7px;
   margin: 5px 0;
@@ -86,6 +86,7 @@ body {
   color: white;
   text-decoration: none;
   border-radius: 4px;
+
 }
 
 #or-container {
@@ -253,4 +254,8 @@ button.detect:hover {
 
 #file-info {
   margin-top: 1rem;
+}
+
+.not-user-buttons:hover{
+  background-color: rgb(83, 126, 62);
 }

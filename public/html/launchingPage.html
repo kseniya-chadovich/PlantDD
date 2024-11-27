@@ -8,10 +8,8 @@
   </head>
   <body>
     <div class="container">
-      <!-- Button to toggle sidebar -->
       <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
 
-      <!-- Sidebar -->
       <div class="sidebar">
         <h2>Menu</h2>
         <ul>
@@ -20,9 +18,9 @@
           <li id = "logout"><a href="#" onclick="logout()">Logout</a></li>
 
           <div id="notuserButtons">
-            <div id="login-container"><a href="/html/login.html" id="login">Log In</a></div>
+            <div id="login-container"><a href="/html/login.html" id="login" class="not-user-buttons">Log In</a></div>
             <div id="or-container"><span id="or">or</span></div>
-            <div id="signup-container"><a href="/html/signup.html" id="signup">Sign Up</a></div>
+            <div id="signup-container"><a href="/html/signup.html" id="signup" class="not-user-buttons">Sign Up</a></div>
           </div>
 
         </ul>
@@ -70,10 +68,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-  <!-- Firebase Config -->
+  
   <script src="/js/firebase-config.js"></script>
 
-  <!-- Signup Logic -->
   <script src="/js/launchingPage.js"></script>
   </body>
 </html>

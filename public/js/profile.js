@@ -1,8 +1,8 @@
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig); 
-  console.log("app does not exist in profile, creating another one");// Initialize Firebase with your config
+  console.log("app does not exist in profile, creating another one");
 } else {
-  firebase.app(); // Use the default app if already initialized
+  firebase.app(); 
 }
 
 let file;
@@ -30,11 +30,10 @@ async function displayUserInfo() {
     if (uid) {
       console.log("User is signed in. UID:", uid);
 
-      // Fetch user information
+      
       const data = await getUserInfo(uid);
       console.log("userName:", data.userName);
 
-      // Update UI
       firstNameDisplay.style.display = "inline";
       lastNameDisplay.style.display = "inline";
       userNameDisplay.style.display = "inline";
@@ -49,7 +48,7 @@ async function displayUserInfo() {
 
       const profileImage = document.getElementById('profile-image');
       if (data.profileImageUrl) {
-        profileImage.src = data.profileImageUrl; // Use the stored URL
+        profileImage.src = data.profileImageUrl; 
       }
     } else {
       console.log("No user is signed in.");
@@ -67,12 +66,12 @@ const setFileName = (name) => {
   fileName = name;
 };
 
-// Function to set the selected file
+
 const setSelectedFile = (file) => {
   selectedFile = file;
 };
 
-// Function to handle the file selection and encoding process
+
 const uploadFile = (e) => {
   file = e.target.files[0];
 
@@ -82,10 +81,10 @@ const uploadFile = (e) => {
   }
 
   const reader = new FileReader();
-  reader.readAsDataURL(file); // Read the file as a Base64 data URL
+  reader.readAsDataURL(file); 
   reader.onloadend = () => {
-    setFileName(file.name); // Save the file name
-    setSelectedFile(reader.result); // Save the Base64-encoded file data
+    setFileName(file.name); 
+    setSelectedFile(reader.result); 
   };
   console.log("Finished setting the name and the file!");
 };
@@ -108,8 +107,8 @@ const sendImageData = async (file) => {
       console.log("File uploaded successfully:", result.pictureURL);
       profileImageUrl = result.pictureURL;
       alert("Upload successful!");
-      setFileName(""); // Reset the file name
-      setSelectedFile(""); // Reset the selected file data
+      setFileName(""); 
+      setSelectedFile(""); 
     } else {
       console.error("Upload failed:", result.error);
     }
@@ -132,19 +131,17 @@ function enableEditMode() {
   lastNameInput.style.display = "inline-block";
   userNameInput.style.display = "inline-block";
 
-  // Pre-fill input fields with current data
   firstNameInput.value = firstNameDisplay.innerText;
   lastNameInput.value = lastNameDisplay.innerText;
   userNameInput.value = userNameDisplay.innerText;
 
-  // Toggle buttons
+  
   editBtn.style.display = "none";
   saveBtn.style.display = "inline-block";
 }
 
 async function saveChanges() {
   try {
-    // Get the current user's UID
     const uid = await getCurrentUserUID();
 
     if (!uid) {
@@ -154,12 +151,10 @@ async function saveChanges() {
 
     await sendImageData(file);
 
-    // Prepare the updated user data
     const firstName = firstNameInput.value;
     const lastName = lastNameInput.value;
     const userName = userNameInput.value;
 
-    // Make a PUT request to update the user info
     const response = await fetch(`https://wheatdiseasedetector.onrender.com/api/users/updateInfo/${uid}`, {
       method: "PUT",
       headers: {
@@ -181,12 +176,10 @@ async function saveChanges() {
 
     console.log("User information updated successfully.");
 
-    // Update the display text with the new values
     firstNameDisplay.innerText = firstName;
     lastNameDisplay.innerText = lastName;
     userNameDisplay.innerText = userName;
 
-    // Switch back to view mode
     firstNameDisplay.style.display = "inline";
     lastNameDisplay.style.display = "inline";
     userNameDisplay.style.display = "inline";
@@ -195,7 +188,6 @@ async function saveChanges() {
     lastNameInput.style.display = "none";
     userNameInput.style.display = "none";
 
-    // Toggle buttons
     editBtn.style.display = "inline-block";
     saveBtn.style.display = "none";
   } catch (error) {
@@ -213,22 +205,21 @@ function toggleSidebar() {
   const mainBody = document.querySelector(".main-content");
   const currentLeft = window.getComputedStyle(sidebar).left;
 
-  // Toggle the sidebar visibility and move the main body accordingly
+  
   if (currentLeft === "0px") {
-    sidebar.style.left = "-280px"; // Hide sidebar
-    mainBody.style.marginLeft = "50px"; // Reset main body margin
+    sidebar.style.left = "-280px"; 
+    mainBody.style.marginLeft = "50px"; 
   } else {
-    sidebar.style.left = "0px"; // Show sidebar
-    mainBody.style.marginLeft = "300px"; // Push main body to the right (sidebar width + gap)
+    sidebar.style.left = "0px"; 
+    mainBody.style.marginLeft = "300px"; 
   }
 }
 
 function logout() {
   firebase.auth().signOut().then(() => {
-    // Redirect to the homepage after logging out
+    
     window.location.href = "../index.html";
   }).catch((error) => {
-    // Handle any errors that occur during sign-out
     console.error("Error during sign-out:", error);
   });
 }
@@ -277,14 +268,13 @@ function enableImageUpload() {
       const reader = new FileReader();
       reader.onload = function (e) {
         const profileImage = document.getElementById("profile-image");
-        profileImage.src = e.target.result; // Set the uploaded image as the new profile picture
+        profileImage.src = e.target.result; 
       };
       reader.readAsDataURL(file); 
-      uploadFile(event);// Read the file as a Data URL
+      uploadFile(event);
     }
   };
 
-  // Enable the event listener for the file input
   document
     .getElementById("image-upload")
     .addEventListener("change", imageUploadListener);
@@ -292,7 +282,6 @@ function enableImageUpload() {
 
 function disableImageUpload() {
   document.getElementById("upload-icon").style.display = "none";
-  // Disable the event listener for the file input
   document
     .getElementById("image-upload")
     .removeEventListener("change", imageUploadListener);

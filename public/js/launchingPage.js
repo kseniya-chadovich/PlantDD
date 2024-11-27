@@ -1,8 +1,8 @@
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig); 
-  console.log("app does not exist in launching page, creating another one");// Initialize Firebase with your config
+  console.log("app does not exist in launching page, creating another one");
 } else {
-  firebase.app(); // Use the default app if already initialized
+  firebase.app(); 
 }
 
 const auth = firebase.auth();
@@ -55,10 +55,10 @@ window.onload = function () {
 
 function logout() {
   firebase.auth().signOut().then(() => {
-    // Redirect to the homepage after logging out
+    
     window.location.href = "../index.html";
   }).catch((error) => {
-    // Handle any errors that occur during sign-out
+    
     console.error("Error during sign-out:", error);
   });
   
@@ -69,13 +69,12 @@ function toggleSidebar() {
   const mainBody = document.querySelector(".main-body");
   const currentLeft = window.getComputedStyle(sidebar).left;
 
-  // Toggle the sidebar visibility and move the main body accordingly
   if (currentLeft === "0px") {
-    sidebar.style.left = "-280px"; // Hide sidebar
-    mainBody.style.marginLeft = "50px"; // Reset main body margin
+    sidebar.style.left = "-280px"; 
+    mainBody.style.marginLeft = "50px"; 
   } else {
-    sidebar.style.left = "0px"; // Show sidebar
-    mainBody.style.marginLeft = "300px"; // Push main body to the right (sidebar width + gap)
+    sidebar.style.left = "0px"; 
+    mainBody.style.marginLeft = "300px"; 
   }
 }
 
@@ -98,7 +97,7 @@ document.getElementById("upload-btn").addEventListener("click", function () {
       if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          // Add the preview image inside the upload button
+          
           button.innerHTML = `<img src="${e.target.result}" alt="Image Preview" />`;
         };
         reader.readAsDataURL(file);
@@ -112,17 +111,15 @@ document.getElementById("upload-btn").addEventListener("click", function () {
 });
 
 
-// Function to set the file name
 const setFileName = (name) => {
   fileName = name;
 };
 
-// Function to set the selected file
+
 const setSelectedFile = (file) => {
   selectedFile = file;
 };
 
-// Function to handle the file selection and encoding process
 const uploadFile = (e) => {
   file = e.target.files[0];
 
@@ -132,15 +129,15 @@ const uploadFile = (e) => {
   }
 
   const reader = new FileReader();
-  reader.readAsDataURL(file); // Read the file as a Base64 data URL
+  reader.readAsDataURL(file);
   reader.onloadend = () => {
-    setFileName(file.name); // Save the file name
-    setSelectedFile(reader.result); // Save the Base64-encoded file data
+    setFileName(file.name); 
+    setSelectedFile(reader.result); 
   };
   console.log("Finished setting the name and the file!");
 };
 
-// Function to send the Base64 file data and file name to the backend
+
 const sendImageData = async (file) => {
   try {
     const formData = new FormData();
@@ -158,9 +155,8 @@ const sendImageData = async (file) => {
     if (result.msg === "SUCCESS") {
       console.log("File uploaded successfully:", result.pictureURL);
       link = result.pictureURL;
-      //alert("Upload successful!");
-      setFileName(""); // Reset the file name
-      setSelectedFile(""); // Reset the selected file data
+      setFileName(""); 
+      setSelectedFile(""); 
     } else {
       console.error("Upload failed:", result.error);
     }
@@ -178,9 +174,9 @@ const detectResult = async (file) => {
   
   try {
     const formData = new FormData();
-    formData.append("file", file); // Add the file selected by the user
+    formData.append("file", file); 
     
-    // Call the prediction API
+    
     const response = await fetch("https://plantmodel.onrender.com/predict", {
         method: "POST",
         body: formData,
@@ -188,7 +184,7 @@ const detectResult = async (file) => {
   
     const data = await response.json();
   
-    // Handle the response
+    
     if (response.ok) {
       if (data.predicted_disease == "Healthy"){
         document.getElementById("answer").textContent = "None";
@@ -209,7 +205,7 @@ const detectResult = async (file) => {
 
 
 
-// Event listener for the "save" button
+
 document.getElementById("save").addEventListener("click", async () => {
   await sendImageData(file);
   await storeLink(uidLocal, link);
@@ -249,7 +245,7 @@ const storeLink = async (id, link) => {
     if (response.ok) {
       alert("Link stored successfully! You can find it now in the History section of the application."); // Alert for success
     } else {
-      alert(`Failed to store the link: ${result.message}`); // Alert for failure
+      alert(`Failed to store the link: ${result.message}`); 
     }
   } catch (error) {
     console.error("Error storing the link:", error);

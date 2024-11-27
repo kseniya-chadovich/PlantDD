@@ -12,12 +12,11 @@ if (!admin.apps.length) {
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET, 
  })
  } else {
-  admin.app(); // Use the existing app if it's already initialized
+  admin.app(); 
 }
 
-// Firestore instance
 const db = admin.firestore();
-const auth = admin.auth();  // Firebase Auth instance
+const auth = admin.auth();  
 const bucket = admin.storage().bucket();
 
 

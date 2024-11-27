@@ -1,8 +1,8 @@
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig); 
-  console.log("app does not exist in history, creating another one");// Initialize Firebase with your config
+  console.log("app does not exist in history, creating another one");
 } else {
-  firebase.app(); // Use the default app if already initialized
+  firebase.app(); 
 }
 const auth = firebase.auth();
 
@@ -12,10 +12,10 @@ function goHome() {
 
 function logout() {
   firebase.auth().signOut().then(() => {
-    // Redirect to the homepage after logging out
+    
     window.location.href = "../index.html";
   }).catch((error) => {
-    // Handle any errors that occur during sign-out
+    
     console.error("Error during sign-out:", error);
   });
 }
@@ -34,7 +34,6 @@ function toggleSidebar() {
   }
 }
 
-// Function to fetch the user's history
 async function fetchUserHistory() { 
   try {
     const uid = await getCurrentUserUID();
@@ -42,30 +41,30 @@ async function fetchUserHistory() {
     const historyData = await response.json();
 
     const historyList = document.getElementById('history-list');
-    historyList.innerHTML = ''; // Clear any existing content
+    historyList.innerHTML = ''; 
 
     if (!historyData.pairs || historyData.pairs.length === 0) {
-      // Case: No saved items
+      
       const noItemsMessage = document.createElement('p');
       noItemsMessage.textContent = "You have no saved items.";
-      noItemsMessage.className = "no-items-message"; // Add a CSS class for styling
+      noItemsMessage.className = "no-items-message"; 
       historyList.appendChild(noItemsMessage);
     } else {
-      // Case: User has saved items
+      
       historyData.pairs.forEach((item) => {
         const historyItem = document.createElement('div');
         historyItem.className = "history-item";
 
-        // Create image element
+        
         const img = document.createElement('img');
-        img.src = item.link; // Use the link retrieved from the backend
-        img.alt = "Uploaded image"; // Alt text for accessibility
+        img.src = item.link; 
+        img.alt = "Uploaded image"; 
         img.onerror = () => {
-          img.src = "/images/placeholder.png"; // Fallback if the image fails to load
+          img.src = "/images/placeholder.png"; 
         };
         historyItem.appendChild(img);
 
-        // Create description paragraph
+        
         const description = document.createElement('p');
         description.textContent = item.description || "No description available.";
         historyItem.appendChild(description);
