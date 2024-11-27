@@ -256,6 +256,6 @@ button.detect:hover {
   margin-top: 1rem;
 }
 
-.not-user-buttons:hover{
+#not-user-buttons:hover{
   background-color: rgb(83, 126, 62);
 }

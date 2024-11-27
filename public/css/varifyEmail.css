@@ -21,16 +21,17 @@ z-index: 0;
   z-index: 1;
 }
 
-.message h2 {
+.message h1 {
   color: white;
   text-align: center;
   margin-top: 1.5rem;
 }
 
-p {
+
 .message p {
   color: white;
   text-align: center;
+  font-size: 1rem;
 }
 
 .background-video {
