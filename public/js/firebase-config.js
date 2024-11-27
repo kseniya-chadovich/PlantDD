@@ -14,5 +14,3 @@ if (!firebase.apps.length) {
 } else {
   console.log("Firebase app already initialized");
 }
-
-window.firebaseAuth = firebase.auth();

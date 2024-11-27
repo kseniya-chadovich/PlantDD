@@ -158,7 +158,7 @@ const sendImageData = async (file) => {
     if (result.msg === "SUCCESS") {
       console.log("File uploaded successfully:", result.pictureURL);
       link = result.pictureURL;
-      alert("Upload successful!");
+      //alert("Upload successful!");
       setFileName(""); // Reset the file name
       setSelectedFile(""); // Reset the selected file data
     } else {
@@ -213,12 +213,15 @@ const detectResult = async (file) => {
 document.getElementById("save").addEventListener("click", async () => {
   await sendImageData(file);
   await storeLink(uidLocal, link);
-  document.getElementById("upload-btn").innerHTML = ""; // Call the function to send the image data
+  document.getElementById("upload-btn").innerHTML = "";
+  document.getElementById("answer").innerHTML = ""; 
 });
 
 document.getElementById("detect").addEventListener("click", async () => {
+  document.getElementById("detect").textContent = "Evaluating...";
   await detectResult(file);
   console.log("Detection done.");
+  document.getElementById("detect").textContent = "Evaluate";
 });
 
 
