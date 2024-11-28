@@ -42,10 +42,10 @@ h1 {
 }
 
 .history-item img {
-  width: 150px; /* Larger square image */
+  width: 150px;
   height: 150px;
   object-fit: cover;
-  border-radius: 12px; /* Soft corners */
+  border-radius: 12px;
   margin-right: 20px;
   transition: transform 0.3s ease;
 }
@@ -74,10 +74,9 @@ h1 {
 }
 
 .history-item img:hover {
-  transform: scale(1.2); /* Enlarge image by 20% */
+  transform: scale(1.2); 
 }
 
-/* Sidebar styles (unchanged) */
 .sidebar {
   width: 280px;
   background-color: rgb(83, 126, 62);

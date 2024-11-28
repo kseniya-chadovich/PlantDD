@@ -47,7 +47,6 @@ async function handleForgotPassword() {
       url: "https://wheatplant-ea05f.web.app/html/passwordReset.html", 
       handleCodeInApp: true, 
     });
-    alert("Please check your email for the reset link.");
     window.location.href = "../html/varifyEmail.html";
   } catch (error) {
     console.error("Error sending password reset email:", error.message);
